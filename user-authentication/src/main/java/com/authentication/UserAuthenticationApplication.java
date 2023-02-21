@@ -1,13 +1,13 @@
-package com.patients;
+package com.authentication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PatientsApplication {
+public class UserAuthenticationApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PatientsApplication.class, args);
+        SpringApplication.run(UserAuthenticationApplication.class, args);
     }
 
 }
