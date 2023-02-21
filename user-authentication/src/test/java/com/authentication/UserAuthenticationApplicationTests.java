@@ -1,10 +1,10 @@
-package com.patients;
+package com.authentication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PatientsApplicationTests {
+class UserAuthenticationApplicationTests {
 
     @Test
     void contextLoads() {
