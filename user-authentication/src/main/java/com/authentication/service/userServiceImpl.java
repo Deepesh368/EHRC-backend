@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class userServiceImpl implements UserService {
-
+    @Autowired
+    private UserRepo userRepo;
     static String getAlphaNumericString()
     {
         int n = 16;
@@ -25,11 +26,11 @@ public class userServiceImpl implements UserService {
 
         return sb.toString();
     }
-    @Autowired
-    private UserRepo userRepo;
+
     @Override
     public String newUser(User user) {
-        return null;
+        userRepo.save(user);
+        return "saved";
     }
 
     @Override
@@ -55,6 +56,8 @@ public class userServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String email) {
+        
+        return;
 
     }
 
