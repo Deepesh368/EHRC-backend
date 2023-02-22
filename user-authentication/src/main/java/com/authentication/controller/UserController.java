@@ -1,6 +1,4 @@
 package com.authentication.controller;
-
-import com.authentication.entity.User;
 import com.authentication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,4 +36,5 @@ public class UserController {
         }
         return ResponseEntity.accepted().body(convert(response));
     }
+    
 }
