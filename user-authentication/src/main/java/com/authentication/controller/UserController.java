@@ -1,5 +1,4 @@
 package com.authentication.controller;
-
 import com.authentication.entity.User;
 import com.authentication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,14 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/")
 public class UserController {
+    @Autowired
+    private UserService userService;
 
     private HashMap<String, String> convert(String res) {
         HashMap<String, String> map = new HashMap<>();
         map.put("response", res);
         return map;
     }
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/login")
     public ResponseEntity<?> login(@RequestHeader("email") String email, @RequestHeader("password") String password) {
@@ -37,5 +36,10 @@ public class UserController {
             return ResponseEntity.badRequest().body(convert(response));
         }
         return ResponseEntity.accepted().body(convert(response));
+    }
+    @PostMapping("/signin")
+    public String saveQuestion(@RequestBody User user){
+        //log.info("Inside saveQuestion method of QuestionController");
+         return  userService.newUser(user);
     }
 }
