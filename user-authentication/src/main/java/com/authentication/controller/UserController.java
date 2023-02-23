@@ -37,9 +37,10 @@ public class UserController {
         }
         return ResponseEntity.accepted().body(convert(response));
     }
-    @PostMapping("/signin")
-    public String saveQuestion(@RequestBody User user){
-        //log.info("Inside saveQuestion method of QuestionController");
-         return  userService.newUser(user);
+    @PostMapping("/signup")
+    public ResponseEntity<?> saveQuestion(@RequestBody User user){
+         String response = userService.newUser(user);
+         return ResponseEntity.accepted().body(convert(response));
+
     }
 }
