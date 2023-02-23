@@ -10,7 +10,7 @@ public class userServiceImpl implements UserService {
 
     static String getAlphaNumericString()
     {
-        int n = 16;
+        int n = 32;
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
                 + "abcdefghijklmnopqrstuvxyz" + "!@#$%^&*()";
