@@ -1,4 +1,10 @@
 package com.consent.repo;
 
-public interface ConsentRepo {
+import com.consent.entity.Consent;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ConsentRepo extends JpaRepository<Consent, String> {
+
 }

@@ -19,7 +19,7 @@ public class UserController {
         return map;
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestHeader("email") String email, @RequestHeader("password") String password) {
         String response = userService.login(email, password);
         if(response.equals("not-found") || response.equals("incorrect-passowrd")){
@@ -29,7 +29,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("email") String email) {
         String response = userService.logout(email);
         if(response.equals("not-found")){
