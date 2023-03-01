@@ -22,9 +22,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestHeader("email") String email, @RequestHeader("password") String password) {
         String response = userService.login(email, password);
-        if(response.equals("not-found") || response.equals("incorrect-passowrd")){
+        if(response.equals("not-found") || response.equals("incorrect-passoword")){
             return ResponseEntity.badRequest().body(convert(response));
         }
+
         return ResponseEntity.accepted().body(convert(response));
     }
 
@@ -41,6 +42,5 @@ public class UserController {
     public ResponseEntity<?> saveQuestion(@RequestBody User user){
          String response = userService.newUser(user);
          return ResponseEntity.accepted().body(convert(response));
-
     }
 }
