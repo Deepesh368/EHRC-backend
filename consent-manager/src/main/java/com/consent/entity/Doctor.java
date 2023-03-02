@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "doctor")
+public class Doctor {
     @Id
     private String uniqueID;
     private String name;
@@ -21,7 +21,7 @@ public class User {
     private String userType;
     private String authToken;
 
-    public User(String name, String email, String password, String phone, String userType) {
+    public Doctor(String name, String email, String password, String phone, String userType) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -29,10 +29,10 @@ public class User {
         this.userType = userType;
     }
 
-    public User() {
+    public Doctor() {
     }
 
-    public User(String uniqueID, String name, String email, String password, String phone, String userType) {
+    public Doctor(String uniqueID, String name, String email, String password, String phone, String userType) {
         this.uniqueID = uniqueID;
         this.name = name;
         this.email = email;
