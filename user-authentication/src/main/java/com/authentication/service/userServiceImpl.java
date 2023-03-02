@@ -14,7 +14,7 @@ public class userServiceImpl implements UserService {
         int n = 32;
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz" + "!@#$%^&*()";
+                + "abcdefghijklmnopqrstuvxyz" + "!@#$%^&*";
         StringBuilder sb = new StringBuilder(n);
         for (int i = 0; i < n; i++) {
             int index
@@ -29,6 +29,7 @@ public class userServiceImpl implements UserService {
 
     @Override
     public String newUser(User user) {
+        // generate unique user id
         userRepo.save(user);
         return "saved";
     }
