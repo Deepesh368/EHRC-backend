@@ -10,4 +10,6 @@ import java.util.ArrayList;
 public interface ConsentRepo extends JpaRepository<Consent, String> {
     public ArrayList<Consent> findAllByPatientId(String patientId);
     public ArrayList<Consent> findAllByDoctorId(String doctorId);
+    public Consent findByRequestId(String consentId);
+
 }
