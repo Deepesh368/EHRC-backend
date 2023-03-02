@@ -1,13 +1,12 @@
 package com.alibou.security.auth;
 
 import com.alibou.security.config.JwtService;
-import com.alibou.security.entity.Token;
-import com.alibou.security.entity.TokenType;
-import com.alibou.security.repository.TokenRepository;
-import com.alibou.security.repository.UserRepository;
-import com.alibou.security.entity.Role;
-import com.alibou.security.entity.User;
-
+import com.alibou.security.token.Token;
+import com.alibou.security.token.TokenRepository;
+import com.alibou.security.token.TokenType;
+import com.alibou.security.user.Role;
+import com.alibou.security.user.User;
+import com.alibou.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
