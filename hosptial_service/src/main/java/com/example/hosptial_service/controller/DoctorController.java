@@ -24,23 +24,23 @@ public class DoctorController {
         map.put("response", res);
         return map;
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestHeader("email") String email, @RequestHeader("password") String password) {
-        String response = doctorService.login(email, password);
-        if(response.equals("not-found") || response.equals("incorrect-passowrd")){
-            return ResponseEntity.badRequest().body(convert(response));
-        }
-        return ResponseEntity.accepted().body(convert(response));
-    }
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("email") String email) {
-        String response = doctorService.logout(email);
-        if(response.equals("not-found")){
-            return ResponseEntity.badRequest().body(convert(response));
-        }
-        return ResponseEntity.accepted().body(convert(response));
-    }
-    @PostMapping("/signup")
+    // @PostMapping("/login")
+    // public ResponseEntity<?> login(@RequestHeader("email") String email, @RequestHeader("password") String password) {
+    //     String response = doctorService.login(email, password);
+    //     if(response.equals("not-found") || response.equals("incorrect-passowrd")){
+    //         return ResponseEntity.badRequest().body(convert(response));
+    //     }
+    //     return ResponseEntity.accepted().body(convert(response));
+    // }
+    // @PostMapping("/logout")
+    // public ResponseEntity<?> logout(@RequestHeader("email") String email) {
+    //     String response = doctorService.logout(email);
+    //     if(response.equals("not-found")){
+    //         return ResponseEntity.badRequest().body(convert(response));
+    //     }
+    //     return ResponseEntity.accepted().body(convert(response));
+    // }
+    @PostMapping("/add")
     public ResponseEntity<?> saveDoctor(@RequestBody Doctor user){
          String response = doctorService.newUser(user);
          return ResponseEntity.accepted().body(convert(response));
