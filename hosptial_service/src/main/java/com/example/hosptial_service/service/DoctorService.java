@@ -7,6 +7,7 @@ public interface DoctorService {
     // String login(String email, String password);
     // String logout(String email);
     void deleteUser(String email);
+    Doctor findById(String id);
     // void updateUserDetails(String userId, Doctor user);
     // void changePassword(String email, String currPass, String newPass);
     
