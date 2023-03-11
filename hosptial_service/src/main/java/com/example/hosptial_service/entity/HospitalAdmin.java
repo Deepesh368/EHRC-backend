@@ -20,5 +20,7 @@ public class HospitalAdmin {
     private String name;
     private String password;
     private String authToken;
+    private String email;
+    private String phone;
     
 }

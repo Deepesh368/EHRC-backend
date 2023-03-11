@@ -5,6 +5,8 @@ import java.util.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +17,11 @@ import lombok.Setter;
 public class PatientRecord {
     @Id
     private String id;
-    private String Patientid;
-    private Date Date_of_visit;
-    private String RecordType; //(lab report, prescription, consultation etc);
-    private String ReportDetails;
+    private String patientId;
+    @Temporal(TemporalType.DATE)
+    private Date dateOfVisit;
+    private String recordType; //(lab report, prescription, consultation etc);
+    private String reportDetails;
     private int severity; 
 
     
