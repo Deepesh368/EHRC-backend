@@ -15,8 +15,8 @@ import lombok.Setter;
 public class PatientRecord {
     @Id
     private String id;
-    private String Patientid;
-    private Date Date_of_visit;
+    private String patient_id;
+    private Date date_of_visit;
     private String RecordType; //(lab report, prescription, consultation etc);
     private String ReportDetails;
     private int severity; 

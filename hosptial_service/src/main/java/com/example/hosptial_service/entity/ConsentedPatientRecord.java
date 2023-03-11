@@ -21,8 +21,8 @@ import lombok.Setter;
 public class ConsentedPatientRecord {
     @Id
     private int id;
-    private String Patientid;
-    private String Hospital_id;
+    private String patient_id;
+    private String hospital_id;
     private String RecordType; //(lab report, prescription, consultation etc);
     private String ReportDetails;
     private int severity; 

@@ -24,11 +24,11 @@ public class ConsentedPatientRecordController {
         return map;
     }
     @PostMapping("/add")
-    public ResponseEntity<?> saveDoctor(@RequestBody ConsentedPatientRecord data){
+    public ResponseEntity<?> saveRecord(@RequestBody ConsentedPatientRecord data){
         String response = cs.save(data);
         return ResponseEntity.accepted().body(convert(response));
    }
-   
+
 
 
     
