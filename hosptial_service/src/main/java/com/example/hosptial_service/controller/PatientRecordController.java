@@ -1,5 +1,7 @@
 package com.example.hosptial_service.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +39,11 @@ public class PatientRecordController {
 
     }
     @GetMapping("/find_all/{from}/{to}/{patient_id}")
-    public List<PatientRecord> findByDateOfVisitAndPatientId(@PathVariable("from") Date d1,@PathVariable("to") Date d2,@PathVariable("patient_id") String patient_id){
-        return patientRecordService.findByDateOfVisitAndPatientId(d1, d2, patient_id);
+    public List<PatientRecord> findByDateOfVisitAndPatientId(@PathVariable("from") String d1,@PathVariable("to") String d2,@PathVariable("patient_id") String patient_id) throws ParseException{
+        SimpleDateFormat f=new SimpleDateFormat("yyyy-dd-MM");
+        Date date1=f.parse(d1);  
+        Date date2=f.parse(d2);    
+        return patientRecordService.findByDateOfVisitAndPatientId(date1, date2, patient_id);
 
     }
 

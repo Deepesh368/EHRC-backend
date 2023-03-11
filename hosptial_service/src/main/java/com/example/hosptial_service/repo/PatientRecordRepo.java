@@ -11,7 +11,7 @@ import com.example.hosptial_service.entity.PatientRecord;
 public interface PatientRecordRepo extends JpaRepository<PatientRecord,String> {
     public List<PatientRecord> findByPatientId(String patient_id);
 
-    @Query(value = "SELECT * FROM patientrecord WHERE patient_id = ?3 AND date_of_visit BETWEEN ?1 AND ?2 ")
+    @Query(value = "SELECT * FROM patientrecord p WHERE p.patient_id = ?3 AND (p.date_of_visit BETWEEN ?1 AND ?2)",nativeQuery = true)
     public List<PatientRecord> findByDateOfVisitAndPatientId(Date startDate,Date endDate,String patient_id);    
     
 }

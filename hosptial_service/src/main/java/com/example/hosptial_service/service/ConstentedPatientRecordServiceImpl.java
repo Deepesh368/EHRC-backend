@@ -20,7 +20,7 @@ public class ConstentedPatientRecordServiceImpl implements ConsentedPatientRecor
 
     @Override
     public List<ConsentedPatientRecord> findByUprnId(String id){
-        return crepo.findByUprnId(id);
+        return crepo.findByDoctorId(id);
     }
 
 
