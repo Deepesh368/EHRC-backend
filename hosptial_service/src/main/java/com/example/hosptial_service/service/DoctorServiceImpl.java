@@ -1,5 +1,9 @@
 package com.example.hosptial_service.service;
 
+import java.util.Optional;
+
+import javax.print.Doc;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +35,11 @@ public class DoctorServiceImpl implements DoctorService {
     public String newUser(Doctor user) {
         doctorRepo.save(user);
         return "saved";
+    }
+    @Override
+    public Doctor findById(String id){
+         return doctorRepo.findById(id).get();
+
     }
     // public String login(String email, String password) {
 
