@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/consent")
@@ -22,20 +23,48 @@ public class ConsentController {
     }
 
     @PostMapping("/doctor/create")
-    public ResponseEntity<?> newRequestFromDoctor(@RequestHeader("auth-token") String authToken, @RequestParam("doctor_id") String docId, @RequestBody Consent consent){
-        String res = consentService.newConsent(docId, authToken, consent);
+    public ResponseEntity<?> newRequestFromDoctor(@RequestBody Consent consent){
+        String res = consentService.newConsent(consent);
         if(!res.matches("success")){
             return ResponseEntity.badRequest().body(convert(res));
         }
         return ResponseEntity.ok(convert(res));
     }
 
-    @GetMapping("/get/patient")
-    public ResponseEntity<?> getAllConsentsPatient(@RequestHeader("auth-token") String authToken, @RequestParam("patient_id") String patientId) {
-        ArrayList<Consent> consents = consentService.allConsentsPatient(patientId,authToken);
+    @GetMapping("/get/doctor")
+    public ResponseEntity<?> getAllConsentsDoctor(@RequestParam("doctor_id") String doctorId) {
+        ArrayList<Consent> consents = consentService.allConsentsDoctor(doctorId);
         if(consents==null){
-            return ResponseEntity.badRequest().body("invalid request");
+            return ResponseEntity.badRequest().body("No consent requested by the doctor");
         }
         return ResponseEntity.ok(consents);
+    }
+
+    @GetMapping("/get/patient")
+    public ResponseEntity<?> getAllConsentsPatient(@RequestParam("patient_id") String patientId) {
+        ArrayList<Consent> consents = consentService.allConsentsPatient(patientId);
+        if(consents==null){
+            return ResponseEntity.badRequest().body("No consent requested for the patient");
+        }
+        return ResponseEntity.ok(consents);
+    }
+
+    @PutMapping("/update/patient")
+    public ResponseEntity<?> updateConsent(@RequestParam("consent_id") String consent_id, @RequestBody Map<String, String> payload){
+        if(payload.get("status").matches("reject")){
+            consentService.rejectConsent(consent_id);
+            return ResponseEntity.ok(convert("changes made successfully"));
+        }
+        consentService.updateConsent(consent_id, payload.get("startDate"), payload.get("endDate"), payload.get("validity"));
+        return ResponseEntity.ok(convert("changes made successfully"));
+    }
+
+    @GetMapping("/get_consent")
+    public ResponseEntity<?> getConsent(@RequestParam("consent_id") String consent_id){
+        Consent consent = consentService.getConsent(consent_id);
+        if(consent==null){
+            return ResponseEntity.ok(convert("invalid consent id"));
+        }
+        return ResponseEntity.ok(consent);
     }
 }

@@ -9,7 +9,4 @@ import com.example.hosptial_service.entity.ConsentedPatientRecord;
 @Repository
 public interface ConsentedPatientRecordRepo extends JpaRepository<ConsentedPatientRecord,String> {
     public List<ConsentedPatientRecord> findByDoctorId(String id);
-
-
-    
 }
