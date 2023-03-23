@@ -1,27 +1,21 @@
 package com.consent.service;
 
 import com.consent.entity.Consent;
-import com.consent.entity.Doctor;
-import com.consent.entity.Patient;
 import com.consent.repo.ConsentRepo;
-import com.consent.repo.DoctorRepo;
-import com.consent.repo.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Service
 public class ConsentServiceImpl implements ConsentService{
     @Autowired
     private ConsentRepo consentRepo;
 
-    @Autowired
-    private DoctorRepo doctorRepo;
-
-    @Autowired
-    private PatientRepo patientRepo;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDateTime now = LocalDateTime.now();
 
     static String getRandom(int length)
     {
@@ -42,51 +36,38 @@ public class ConsentServiceImpl implements ConsentService{
 
 
     @Override
-    public String newConsent(String doctorId, String authToken, Consent consent) {
-        if(!doctorRepo.existsDoctorByUniqueID(doctorId)){
-            return "doctor not found";
-        }
-        if(!patientRepo.existsPatientByUniqueID(consent.getPatientId())){
-            return "patient not found";
-        }
-        if(!consent.getDoctorId().matches(doctorId)){
-            return "invalid request";
-        }
-        // Authentication and autherization code here
+    public String newConsent(Consent consent) {
         String random = getRandom(10);
         while(consentRepo.existsById(random)){
             random = getRandom(10);
         }
         consent.setRequestId(random);
+        if(consent.getStatus()==null || !consent.getStatus().matches("Emergency")) {
+            consent.setStatus("Pending");
+        }
+        consent.setConsentEndDate(null);
+        consent.setConsentStartDate(null);
+        consent.setConsentValidity(null);
+        consent.setDateOfRequest(dtf.format(now));
+//        consent.setDateOfRequest("");
         consentRepo.save(consent);
         return "Success";
     }
 
     @Override
-    public ArrayList<Consent> allConsentsPatient(String patientId, String authToken) {
-        if(!patientRepo.existsById(patientId)){
-            return null;
-        }
-        // Authentication and autherization code here
+    public ArrayList<Consent> allConsentsPatient(String patientId) {
         return consentRepo.findAllByPatientId(patientId);
     }
 
     @Override
-    public ArrayList<Consent> allConsentsDoctor(String doctorId, String authToken) {
-        if(!doctorRepo.existsDoctorByUniqueID(doctorId)){
-            return null;
-        }
-        // Authentication and autherization code here
+    public ArrayList<Consent> allConsentsDoctor(String doctorId) {
         return consentRepo.findAllByDoctorId(doctorId);
     }
 
     @Override
-    public String updateConsent(String patientId, String authToken, String requestId, Date startDate, Date endDate, Date validity) {
-        if(!patientRepo.existsById(patientId)){
-            return "patient not found";
-        }
-        // Authentication and autherization code here
+    public String updateConsent(String requestId, String startDate, String endDate, String validity) {
         Consent consent = consentRepo.findByRequestId(requestId);
+        if(consent==null) return "invalid consent id";
         consent.setConsentValidity(validity);
         consent.setConsentStartDate(startDate);
         consent.setConsentEndDate(endDate);
@@ -96,15 +77,16 @@ public class ConsentServiceImpl implements ConsentService{
     }
 
     @Override
-    public String rejectConsent(String patientId, String authToken, String requestId) {
-        if(!patientRepo.existsById(patientId)){
-            return "patient not found";
-        }
-        // Authentication and autherization code here
+    public String rejectConsent(String requestId) {
         Consent consent = consentRepo.findByRequestId(requestId);
+        if(consent==null) return "invalid consent id";
         consent.setStatus("rejected");
         consentRepo.save(consent);
         return "success";
+    }
 
+    @Override
+    public Consent getConsent(String consentId) {
+        return consentRepo.findByRequestId(consentId);
     }
 }
