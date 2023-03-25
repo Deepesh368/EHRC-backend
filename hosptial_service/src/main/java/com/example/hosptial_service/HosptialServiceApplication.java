@@ -15,9 +15,9 @@ public class HosptialServiceApplication {
 
 	public static void main(String[] args) {
 
-		startInstance("classpath:application-1.yml",args);
-		startInstance( "classpath:application-2.yml",args);
-		//startInstance(8082, "classpath:application-database3.properties");
+		SpringApplication.run(HosptialServiceApplication.class,args);
+		//startInstance( "classpath:application-1.yml",args);
+		//startInstance( "classpath:application-2.yml",args);
 	}
 
 	private static void startInstance( String configFile,String [] args) {
