@@ -25,15 +25,15 @@ public class ConsentController {
     @PostMapping("/doctor/create")
     public ResponseEntity<?> newRequestFromDoctor(@RequestBody Consent consent){
         String res = consentService.newConsent(consent);
-        if(!res.matches("success")){
+        if(!res.matches("Success")){
             return ResponseEntity.badRequest().body(convert(res));
         }
         return ResponseEntity.ok(convert(res));
     }
 
     @GetMapping("/get/doctor")
-    public ResponseEntity<?> getAllConsentsDoctor(@RequestParam("doctor_id") String doctorId) {
-        ArrayList<Consent> consents = consentService.allConsentsDoctor(doctorId);
+    public ResponseEntity<?> getAllConsentsDoctor(@RequestParam("doctor_id") Integer doctorId, @RequestParam("hospital_id") String hospitalId) {
+        ArrayList<Consent> consents = consentService.allConsentsDoctor(doctorId, hospitalId);
         if(consents==null){
             return ResponseEntity.badRequest().body("No consent requested by the doctor");
         }
