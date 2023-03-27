@@ -1,0 +1,18 @@
+server:
+  port: 9005
+#consent-manager:
+#  port: "9001"
+spring:
+  application:
+    name: hospital-manager-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/manager
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

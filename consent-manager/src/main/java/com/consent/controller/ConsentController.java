@@ -39,6 +39,15 @@ public class ConsentController {
         }
         return ResponseEntity.ok(consents);
     }
+    @GetMapping("/get/doctor/{doctor_id}/{hospital_id}")
+    public ResponseEntity<?> getAllConsentsDoctor2(@PathVariable Integer doctor_id, @PathVariable String hospital_id) {
+        ArrayList<Consent> consents = consentService.allConsentsDoctor(doctor_id,hospital_id);
+        if(consents==null){
+            return ResponseEntity.badRequest().body("No consent requested by the doctor");
+        }
+        return ResponseEntity.ok(consents);
+    }
+
 
     @GetMapping("/get/patient")
     public ResponseEntity<?> getAllConsentsPatient(@RequestParam("patient_id") String patientId) {
