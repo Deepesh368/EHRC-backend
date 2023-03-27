@@ -1,11 +1,15 @@
 server:
-  port: 9005
-
+  port: 9002
+hospital:
+  id: "1"
+  name: "Mera-hospital"
+hospital-manager:
+  port: "9004"
 spring:
   application:
     name: hospital-service
-  profiles:
-    active: 1
+#  profiles:
+#    active: 1
 
   datasource:
     url: jdbc:mysql://localhost:3306/dbdoctor
