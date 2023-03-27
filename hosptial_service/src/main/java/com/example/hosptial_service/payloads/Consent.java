@@ -1,4 +1,4 @@
-package com.example.hosptial_service.entity;
+package com.example.hosptial_service.payloads;
 
 import java.util.Date;
 
