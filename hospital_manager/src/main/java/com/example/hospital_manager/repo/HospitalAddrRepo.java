@@ -4,4 +4,5 @@ import com.example.hospital_manager.entity.HospitalAddr;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HospitalAddrRepo extends JpaRepository<HospitalAddr,Integer> {
+    public HospitalAddr findHospitalAddrById(String Id);
 }

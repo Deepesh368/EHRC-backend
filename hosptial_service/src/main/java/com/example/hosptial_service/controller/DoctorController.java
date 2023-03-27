@@ -1,6 +1,7 @@
 package com.example.hosptial_service.controller;
 
 import com.example.hosptial_service.entity.Doctor;
+import com.example.hosptial_service.entity.PatientRecord;
 import com.example.hosptial_service.payloads.Consent;
 import com.example.hosptial_service.payloads.HospitalAddrRequest;
 import com.example.hosptial_service.service.DoctorService;
@@ -43,6 +44,12 @@ public class DoctorController {
     public ResponseEntity<?>get_all_consents(@PathVariable Integer id) {
         List<Consent>s_list = webClient.get().uri("localhost:9005/hospital-addr/doctor/get-consents/"+id+"/"+hospital_id).retrieve().bodyToFlux(Consent.class).collectList().block();
         return ResponseEntity.accepted().body(s_list);
+    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping ("/get-patient-data/{consent_id}")
+    public ResponseEntity<?>get_patient_data(@PathVariable Integer consent_id) {
+        List<PatientRecord>pr_list = webClient.get().uri("localhost:9005/hospital-addr/doctor/get-patient-data/"+consent_id).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+        return ResponseEntity.accepted().body(pr_list);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-doctor")

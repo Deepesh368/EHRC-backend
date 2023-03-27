@@ -3,6 +3,7 @@ package com.example.hospital_manager.controller;
 import com.example.hospital_manager.entity.HospitalAddr;
 import com.example.hospital_manager.payload.Consent;
 import com.example.hospital_manager.payload.HospitalAddrRequest;
+import com.example.hospital_manager.payload.PatientRecord;
 import com.example.hospital_manager.repo.HospitalAddrRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,19 @@ public class HospitalAddrController {
         String response = "forwarded";
         webClient.post().uri("http://localhost:9002/consent/doctor/create").bodyValue(consent).retrieve().bodyToMono(Consent.class).block();
         return ResponseEntity.accepted().body(convert(response));
+    }
+    @GetMapping("/get-patient-records/{consent_id}")
+    public ResponseEntity<?>get_patient_records(@PathVariable Integer consent_id){
+        Consent consent = webClient.get().uri("http://localhost:9002/consent/get-consent/"+consent_id).retrieve().bodyToMono(Consent.class).block();
+        if(consent==null)
+            return ResponseEntity.accepted().body("consent not given to view the data");
+        HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(consent.getSendingHospitalId());
+        String port = h.getAddr();
+        String from = consent.getReqStartDate();
+        String to =consent.getReqEndDate();
+        String patient_id = consent.getPatientId();
+        List<PatientRecord> pr_list = webClient.get().uri("http://localhost:"+port+"/records//find_all/{"+from+"}/{"+to+"}/{"+patient_id+"}").retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+        return ResponseEntity.accepted().body(pr_list);
     }
 
 
