@@ -44,8 +44,8 @@ public class PatientRecordController {
         Date date1=f.parse(d1);  
         Date date2=f.parse(d2);    
         return patientRecordService.findByDateOfVisitAndPatientId(date1, date2, patient_id);
-
     }
+
 
      
 
