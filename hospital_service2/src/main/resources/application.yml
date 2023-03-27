@@ -1,18 +1,12 @@
 server:
-  port: 9001
-hospital:
-  id: "1"
-  name: "Mera-hospital"
-hospital-manager:
-  port: "9005"
+  port: 9003
+
 spring:
   application:
-    name: hospital-service
-#  profiles:
-#    active: 1
+    name: hospital-service-2
 
   datasource:
-    url: jdbc:mysql://localhost:3306/dbdoctor
+    url: jdbc:mysql://localhost:3306/codejavadb
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

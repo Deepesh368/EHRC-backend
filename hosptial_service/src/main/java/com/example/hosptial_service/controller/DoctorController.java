@@ -21,7 +21,7 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
     @Autowired private WebClient webClient;
-    @Value("${hospital.id}")
+    @Value("sendingHospitalId")
     private String hospital_id;
 
     @Value("${server.port}")
@@ -32,17 +32,17 @@ public class DoctorController {
         return map;
     }
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/create-consent/{id}")
-    public ResponseEntity<?>create_consent(@PathVariable Integer id, @RequestBody Consent consent){
+    @PostMapping("/create-consent")
+    public ResponseEntity<?>create_consent(@RequestBody Consent consent){
         String response = "saved";
+        webClient.post().uri("http://localhost:9005/hospital-addr/create-consent").bodyValue(consent).retrieve().bodyToMono(Consent.class).block();
         return ResponseEntity.accepted().body(convert(response));
     }
     @PreAuthorize("hasRole('USER')")
-    @GetMapping ("/get-all-consent/{id}")
+    @GetMapping ("/get-consent/{id}")
     public ResponseEntity<?>get_all_consents(@PathVariable Integer id) {
-        String response = "saved";
-        List<Consent> c = new ArrayList<>();
-        return ResponseEntity.accepted().body(response);
+        List<Consent>s_list = webClient.get().uri("localhost:9005/hospital-addr/doctor/get-consents/"+id+"/"+hospital_id).retrieve().bodyToFlux(Consent.class).collectList().block();
+        return ResponseEntity.accepted().body(s_list);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-doctor")
