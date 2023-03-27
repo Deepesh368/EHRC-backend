@@ -60,8 +60,8 @@ public class ConsentServiceImpl implements ConsentService{
     }
 
     @Override
-    public ArrayList<Consent> allConsentsDoctor(String doctorId) {
-        return consentRepo.findAllByDoctorId(doctorId);
+    public ArrayList<Consent> allConsentsDoctor(Integer doctorId, String HospitalId) {
+        return consentRepo.findAllByDoctorIdAndSendingHospitalId(doctorId,HospitalId);
     }
 
     @Override
