@@ -1,7 +1,7 @@
 server:
   port: 9005
-consent-manager:
-  port: "9001"
+#consent-manager:
+#  port: "9001"
 spring:
   application:
     name: hospital-manager-service

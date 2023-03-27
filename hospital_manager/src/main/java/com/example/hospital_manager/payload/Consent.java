@@ -6,11 +6,13 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 public class Consent {
+    @Id
     private String requestId;
-    private String doctorId;
+    private Integer doctorId;
     private String patientId;
     private String requestingHospitalId;
     private String sendingHospitalId;
@@ -22,9 +24,11 @@ public class Consent {
     private String consentStartDate;
     private String consentEndDate;
     private String consentValidity;
+
     public Consent() {
     }
-    public Consent(String doctorId, String patientId, String requestingHospitalId, String sendingHospitalId, String reqStartDate, String reqEndDate, String reqValidity) {
+
+    public Consent(Integer doctorId, String patientId, String requestingHospitalId, String sendingHospitalId, String reqStartDate, String reqEndDate, String reqValidity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.sendingHospitalId = sendingHospitalId;
@@ -34,7 +38,7 @@ public class Consent {
         this.requestingHospitalId = requestingHospitalId;
     }
 
-    public Consent(String doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, String reqStartDate, String reqEndDate, String reqValidity) {
+    public Consent(Integer doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, String reqStartDate, String reqEndDate, String reqValidity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.requestingHospitalId = requestingHospitalId;
