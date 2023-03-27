@@ -40,7 +40,7 @@ public class PatientRecordController {
     }
     @GetMapping("/find_all/{from}/{to}/{patient_id}")
     public List<PatientRecord> findByDateOfVisitAndPatientId(@PathVariable("from") String d1,@PathVariable("to") String d2,@PathVariable("patient_id") String patient_id) throws ParseException{
-        SimpleDateFormat f=new SimpleDateFormat("yyyy-dd-MM");
+        SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
         Date date1=f.parse(d1);  
         Date date2=f.parse(d2);    
         return patientRecordService.findByDateOfVisitAndPatientId(date1, date2, patient_id);

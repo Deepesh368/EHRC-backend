@@ -2,7 +2,7 @@ server:
   port: 9002
 spring:
   application:
-    name: consent-manager
+    name: consent-manager-service
 
   datasource:
     url: jdbc:mysql://localhost:3306/ehrc
@@ -15,4 +15,4 @@ spring:
       ddl-auto: update
 eureka:
   client:
-    enabled: false
+    enabled: true
