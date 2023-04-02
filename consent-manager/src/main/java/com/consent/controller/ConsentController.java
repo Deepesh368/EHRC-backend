@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +52,7 @@ public class ConsentController {
     }
 
 
-    @GetMapping("/get/patient")
+    @GetMapping("/patient/get-all")
     public ResponseEntity<?> getAllConsentsPatient(@RequestParam("patient_id") String patientId) {
         ArrayList<Consent> consents = consentService.allConsentsPatient(patientId);
         if(consents==null){
@@ -58,14 +61,19 @@ public class ConsentController {
         return ResponseEntity.ok(consents);
     }
 
-    @PutMapping("/update/patient")
+    @PutMapping("/patient/update")
     public ResponseEntity<?> updateConsent(@RequestParam("consent_id") String consent_id, @RequestBody Map<String, String> payload){
         if(payload.get("status").matches("reject")){
             consentService.rejectConsent(consent_id);
             return ResponseEntity.ok(convert("changes made successfully"));
         }
-        consentService.updateConsent(consent_id, payload.get("startDate"), payload.get("endDate"), payload.get("validity"));
-        return ResponseEntity.ok(convert("changes made successfully"));
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            consentService.updateConsent(consent_id, f.parse(payload.get("startDate")), f.parse(payload.get("endDate")), f.parse(payload.get("validity")));
+            return ResponseEntity.ok(convert("changes made successfully"));
+        } catch (ParseException e){
+            return ResponseEntity.ok("Cannot make the changes");
+        }
     }
 
     @GetMapping("/get_consent")
@@ -80,9 +88,8 @@ public class ConsentController {
     public ResponseEntity<?> getConsent2(@PathVariable String consent_id){
         Consent consent = consentService.getConsent(consent_id);
         String status = consent.getStatus();
-        //only fetch if the status is accepted
-        if(consent==null){
-            return ResponseEntity.ok(convert("Cannot Fetch"));
+        if(consent==null || (!status.matches("Emegency") && !status.matches("Accepted"))){
+            return ResponseEntity.ok(null);
         }
         return ResponseEntity.ok(consent);
     }

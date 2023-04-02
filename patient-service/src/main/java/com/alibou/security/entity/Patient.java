@@ -23,20 +23,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
-public class User implements UserDetails {
+public class Patient implements UserDetails {
 
   @Id
   @GeneratedValue
   private Integer id;
-  private String firstname;
-  private String lastname;
+  private String name;
   private String email;
   private String password;
+  private String phone;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "patient")
   private List<Token> tokens;
 
   @Override
@@ -45,14 +45,7 @@ public class User implements UserDetails {
   }
 
   @Override
-  public String getPassword() {
-    return password;
-  }
-
-  @Override
-  public String getUsername() {
-    return email;
-  }
+  public String getUsername(){ return  email;}
 
   @Override
   public boolean isAccountNonExpired() {
@@ -73,4 +66,5 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }

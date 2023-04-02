@@ -48,11 +48,11 @@ public class HospitalAddrController {
         List<Consent>s_list = webClient.get().uri("http://localhost:9002/consent/get/doctor/"+doctor_id+"/"+hospital_id).retrieve().bodyToFlux(Consent.class).collectList().block();
         return ResponseEntity.accepted().body(s_list);
     }
-    @GetMapping("/patient/get-consent/{patient_id}")
-    public ResponseEntity<?>get_consents_patient(@PathVariable Integer patient_id){
-        List<Consent>s_list = webClient.get().uri("http://localhost:9091/consent/patient/"+patient_id).retrieve().bodyToFlux(Consent.class).collectList().block();
-        return ResponseEntity.accepted().body(s_list);
-    }
+//    @GetMapping("/patient/get-consent/{patient_id}")
+//    public ResponseEntity<?>get_consents_patient(@PathVariable Integer patient_id){
+//        List<Consent>s_list = webClient.get().uri("http://localhost:9091/consent/patient/"+patient_id).retrieve().bodyToFlux(Consent.class).collectList().block();
+//        return ResponseEntity.accepted().body(s_list);
+//    }
     @PostMapping("/create-consent")
    public ResponseEntity<?>post_consent(@RequestBody Consent consent){
         String response = "forwarded";
@@ -66,8 +66,8 @@ public class HospitalAddrController {
             return ResponseEntity.accepted().body("consent not given to view the data");
         HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(consent.getSendingHospitalId());
         String port = h.getAddr();
-        String from = consent.getReqStartDate();
-        String to =consent.getReqEndDate();
+        String from = consent.getConsentStartDate();
+        String to =consent.getConsentEndDate();
         String patient_id = consent.getPatientId();
         List<PatientRecord> pr_list = webClient.get().uri("http://localhost:"+port+"/records//find_all/{"+from+"}/{"+to+"}/{"+patient_id+"}").retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);
