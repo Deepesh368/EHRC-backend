@@ -1,13 +1,11 @@
 package com.alibou.security.auth;
 
 import com.alibou.security.config.JwtService;
-import com.alibou.security.entity.Token;
-import com.alibou.security.entity.TokenType;
 import com.alibou.security.exceptions.ApiException;
 import com.alibou.security.repository.TokenRepository;
-import com.alibou.security.repository.UserRepository;
+import com.alibou.security.repository.PatientRepository;
 import com.alibou.security.entity.Role;
-import com.alibou.security.entity.User;
+import com.alibou.security.entity.Patient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,16 +17,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-  private final UserRepository repository;
+  private final PatientRepository repository;
   private final TokenRepository tokenRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
+    var user = Patient.builder()
+        .name(request.getName())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(Role.USER)

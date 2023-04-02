@@ -6,6 +6,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 
 @Getter
 @Setter
@@ -19,18 +21,18 @@ public class Consent {
     private String requestingHospitalId;
     private String sendingHospitalId;
     private String status;
-    private String dateOfRequest;
-    private String reqStartDate;
-    private String reqEndDate;
-    private String reqValidity;
-    private String consentStartDate;
-    private String consentEndDate;
-    private String consentValidity;
+    private Date dateOfRequest;
+    private Date reqStartDate;
+    private Date reqEndDate;
+    private Date reqValidity;
+    private Date consentStartDate;
+    private Date consentEndDate;
+    private Date consentValidity;
 
     public Consent() {
     }
 
-    public Consent(Integer doctorId, String patientId, String requestingHospitalId, String sendingHospitalId, String reqStartDate, String reqEndDate, String reqValidity) {
+    public Consent(Integer doctorId, String patientId, String requestingHospitalId, String sendingHospitalId,Date reqStartDate,Date reqEndDate,Date reqValidity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.sendingHospitalId = sendingHospitalId;
@@ -40,7 +42,7 @@ public class Consent {
         this.requestingHospitalId = requestingHospitalId;
     }
 
-    public Consent(Integer doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, String reqStartDate, String reqEndDate, String reqValidity) {
+    public Consent(Integer doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, Date reqStartDate,Date reqEndDate,Date reqValidity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.requestingHospitalId = requestingHospitalId;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class ConsentServiceImpl implements ConsentService{
@@ -15,7 +16,7 @@ public class ConsentServiceImpl implements ConsentService{
     private ConsentRepo consentRepo;
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    LocalDateTime now = LocalDateTime.now();
+    Date now = new Date();
 
     static String getRandom(int length)
     {
@@ -48,8 +49,7 @@ public class ConsentServiceImpl implements ConsentService{
         consent.setConsentEndDate(null);
         consent.setConsentStartDate(null);
         consent.setConsentValidity(null);
-        consent.setDateOfRequest(dtf.format(now));
-//        consent.setDateOfRequest("");
+        consent.setDateOfRequest(now);
         consentRepo.save(consent);
         return "Success";
     }
@@ -65,7 +65,7 @@ public class ConsentServiceImpl implements ConsentService{
     }
 
     @Override
-    public String updateConsent(String requestId, String startDate, String endDate, String validity) {
+    public String updateConsent(String requestId, Date startDate,Date endDate,Date validity) {
         Consent consent = consentRepo.findByRequestId(requestId);
         if(consent==null) return "invalid consent id";
         consent.setConsentValidity(validity);
