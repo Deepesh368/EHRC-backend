@@ -27,6 +27,7 @@ public class AuthenticationService {
     var user = Patient.builder()
         .name(request.getName())
         .email(request.getEmail())
+        .phone(request.getPhone())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(Role.USER)
         .build();

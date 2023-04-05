@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import jakarta.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +34,8 @@ public class PatientRecordController {
          String response = patientRecordService.newUser(patientRecord);
          return ResponseEntity.accepted().body(convert(response));
     }
-    @GetMapping("/find_all/{patient_id}")
-    public List<PatientRecord> findByPatientId(@PathVariable("patient_id") String patient_id){
+    @GetMapping("/find_all")
+    public List<PatientRecord> findByPatientId(@QueryParam("patient_id") String patient_id){
         return  patientRecordService.findByPatientId(patient_id);
 
     }

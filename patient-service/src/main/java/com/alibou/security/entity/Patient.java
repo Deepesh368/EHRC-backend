@@ -22,7 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "patient")
 public class Patient implements UserDetails {
 
   @Id

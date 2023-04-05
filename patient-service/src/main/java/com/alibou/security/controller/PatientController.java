@@ -16,7 +16,8 @@ import java.util.Map;
 @RequestMapping("/api/v1/patient")
 public class PatientController {
 
-  private String consentServer = "http://localhost:9002/";
+  private String consentServer = "http://localhost:9002/consent/";
+  private String hospitalManager = "http://localhost:9001/";
   @Autowired
   private PatientService patientService;
 
@@ -24,19 +25,19 @@ public class PatientController {
   private WebClient webClient;
   @GetMapping("/all-consents")
   ResponseEntity<?> getAllConsents(@RequestParam("patient_id") String patientId){
-    List<Consent> consent_list = webClient.get().uri(uriBuilder -> uriBuilder.path(consentServer + "patient/get-all").queryParam("patient_id", patientId).build()).retrieve().bodyToFlux(Consent.class).collectList().block();
+    List<Consent> consent_list = webClient.get().uri(consentServer + "patient/getall?patientid=" + patientId).retrieve().bodyToFlux(Consent.class).collectList().block();
     return ResponseEntity.ok(consent_list);
   }
 
   @PutMapping("/update-consent")
   ResponseEntity<?> updateConsents(@RequestParam("consent_id") String consent_id, @RequestBody Map<String, String> payload){
-    String response = webClient.put().uri(uriBuilder -> uriBuilder.path(consentServer+"patient/update").queryParam("consent_id", consent_id).build()).bodyValue(payload).retrieve().bodyToMono(String.class).block();
+    String response = webClient.put().uri(consentServer+"patient/update?consent_id=" + consent_id).bodyValue(payload).retrieve().bodyToMono(String.class).block();
     return ResponseEntity.accepted().body(response);
   }
 
-  @GetMapping("/get-Records")
+  @GetMapping("/get-records")
   ResponseEntity<?> getRecords(@RequestParam("patient_id") String patientId, @RequestParam("hospital_id") String hos_id){
-    List<PatientRecord> pr_list = webClient.get().uri(uriBuilder -> uriBuilder.path(consentServer + "/records/find_all").queryParam("patient_id", patientId).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+    List<PatientRecord> pr_list = webClient.get().uri(hospitalManager + "/api/v1/patient-records/get-records-hospital?patient_id="+ patientId + "&hospital_id=" +hos_id).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
     return ResponseEntity.accepted().body(pr_list);
   }
 
