@@ -2,7 +2,7 @@ package com.alibou.security.auth;
 
 import com.alibou.security.config.JwtService;
 import com.alibou.security.exceptions.ApiException;
-import com.alibou.security.repository.TokenRepository;
+//import com.alibou.security.repository.TokenRepository;
 import com.alibou.security.repository.PatientRepository;
 import com.alibou.security.entity.Role;
 import com.alibou.security.entity.Patient;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
   private final PatientRepository repository;
-  private final TokenRepository tokenRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
