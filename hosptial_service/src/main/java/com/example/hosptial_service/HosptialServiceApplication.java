@@ -1,5 +1,8 @@
 package com.example.hosptial_service;
 
+import com.example.hosptial_service.auth.AuthenticationService;
+import com.example.hosptial_service.auth.RegisterRequest;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,7 +13,13 @@ import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
 @SpringBootApplication
-public class HosptialServiceApplication {
+public class HosptialServiceApplication implements CommandLineRunner {
+
+	private final AuthenticationService authenticationService;
+
+	public HosptialServiceApplication(AuthenticationService authenticationService) {
+		this.authenticationService = authenticationService;
+	}
 
 	public static void main(String[] args) {
 
@@ -36,6 +45,12 @@ public class HosptialServiceApplication {
 	@Bean
 	public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
 		return new TomcatServletWebServerFactory();
+	}
+
+	@Override
+	public void run(String... arg0) throws Exception{
+		RegisterRequest request = new  RegisterRequest("Admin", "Admin@Admin", "Admin");
+		authenticationService.register_admin(request);
 	}
 
 }

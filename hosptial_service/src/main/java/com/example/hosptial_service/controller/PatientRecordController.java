@@ -9,6 +9,7 @@ import java.util.List;
 import jakarta.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ import com.example.hosptial_service.entity.PatientRecord;
 import com.example.hosptial_service.service.PatientRecordService;
 
 @RestController
-@RequestMapping("/records")
+@RequestMapping("/api/v1/hospital-records")
 public class PatientRecordController {
     @Autowired
     public PatientRecordService patientRecordService;
@@ -29,6 +30,8 @@ public class PatientRecordController {
         map.put("response", res);
         return map;
     }
+
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/add")
     public ResponseEntity<?> savePatientRecord(@RequestBody PatientRecord patientRecord){
          String response = patientRecordService.newUser(patientRecord);

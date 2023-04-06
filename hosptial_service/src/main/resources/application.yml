@@ -4,7 +4,7 @@ hospital:
   id: "2"
   name: "Mera-dusra-hospital"
 hospital-manager:
-  port: "9001"
+  address: "http://localhost:9001"
 spring:
   application:
     name: hospital-service
