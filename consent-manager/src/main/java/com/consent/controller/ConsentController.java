@@ -52,8 +52,8 @@ public class ConsentController {
     }
 
 
-    @GetMapping("/patient/get-all")
-    public ResponseEntity<?> getAllConsentsPatient(@RequestParam("patient_id") String patientId) {
+    @GetMapping("/patient/getall")
+    public ResponseEntity<?> getAllConsentsPatient(@RequestParam("patientid") String patientId) {
         ArrayList<Consent> consents = consentService.allConsentsPatient(patientId);
         if(consents==null){
             return ResponseEntity.badRequest().body("No consent requested for the patient");

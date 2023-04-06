@@ -1,18 +1,16 @@
 server:
-  port: 9001
+  port: 9006
 hospital:
-  id: "1"
-  name: "Mera-hospital"
+  id: "2"
+  name: "Mera-dusra-hospital"
 hospital-manager:
-  port: "9005"
+  port: "9001"
 spring:
   application:
     name: hospital-service
-#  profiles:
-#    active: 1
 
   datasource:
-    url: jdbc:mysql://localhost:3306/dbdoctor
+    url: jdbc:mysql://localhost:3306/hospital_one
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,3 +19,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+eureka:
+  client:
+    enabled: false

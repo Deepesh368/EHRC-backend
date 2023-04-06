@@ -24,7 +24,7 @@ public class PatientRecordsController{
     ResponseEntity<?> getRecords(@RequestParam("patient_id") String patientId, @RequestParam("hospital_id") String hos_id){
         HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(hos_id);
         String port = h.getAddr();
-        List<PatientRecord> pr_list = webClient.get().uri(uriBuilder -> uriBuilder.path("http://localhost:"+port+"/records/find_all").queryParam("patient_id", patientId).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+        List<PatientRecord> pr_list = webClient.get().uri("http://localhost:"+port+"/records/find_all?patient_id="+ patientId).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);
     }
 }
