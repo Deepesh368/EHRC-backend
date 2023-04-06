@@ -1,9 +1,6 @@
 package com.example.hosptial_service.auth;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
@@ -17,4 +14,10 @@ public class RegisterRequest {
   private String specialization;
   private String email;
   private String password;
+
+  public RegisterRequest(String name, String email, String password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
 }

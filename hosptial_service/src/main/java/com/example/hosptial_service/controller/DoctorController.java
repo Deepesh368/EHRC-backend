@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/doctor")
+@RequestMapping("/api/v1/hospital-doctor")
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
@@ -28,8 +28,8 @@ public class DoctorController {
     @Value("${server.port}")
     private Integer hospital_addr;
 
-    @Value("${hospital-manager.port}")
-    private Integer hospital_manager;
+    @Value("${hospital-manager.address}")
+    private String hospital_manager;
     private HashMap<String, String> convert(String res) {
         HashMap<String, String> map = new HashMap<>();
         map.put("response", res);
@@ -39,35 +39,21 @@ public class DoctorController {
     @PostMapping("/create-consent")
     public ResponseEntity<?>create_consent(@RequestBody Consent consent){
         String response = "saved";
-        webClient.post().uri("http://localhost:"+ hospital_manager+"/hospital-addr/create-consent").bodyValue(consent).retrieve().bodyToMono(Consent.class).block();
+        webClient.post().uri(hospital_manager+"/hospital-addr/create-consent").bodyValue(consent).retrieve().bodyToMono(Consent.class).block();
         return ResponseEntity.accepted().body(convert(response));
     }
     @PreAuthorize("hasRole('USER')")
     @GetMapping ("/get-consent/{id}")
     public ResponseEntity<?>get_all_consents(@PathVariable Integer id) {
-        List<Consent>s_list = webClient.get().uri("localhost:"+hospital_manager+"/hospital-addr/doctor/get-consents/"+id+"/"+hospital_id).retrieve().bodyToFlux(Consent.class).collectList().block();
+        List<Consent>s_list = webClient.get().uri(hospital_manager+"/hospital-addr/doctor/get-consents/"+id+"/"+hospital_id).retrieve().bodyToFlux(Consent.class).collectList().block();
         return ResponseEntity.accepted().body(s_list);
     }
     @PreAuthorize("hasRole('USER')")
     @GetMapping ("/get-patient-data/{consent_id}")
     public ResponseEntity<?>get_patient_data(@PathVariable String consent_id) {
-        List<PatientRecord>pr_list = webClient.get().uri("localhost:"+hospital_manager+"/hospital-addr/get-patient-records/"+consent_id).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+        List<PatientRecord>pr_list = webClient.get().uri(hospital_manager+"/hospital-addr/get-patient-records/"+consent_id).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);
     }
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/add-doctor")
-    public ResponseEntity<?>addDoctor(@RequestBody Doctor d){
-        String response =doctorService.SaveUser(d);
-        return ResponseEntity.accepted().body(response);
-    }
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/register-hospital")
-    public ResponseEntity<?>addHospital(@RequestBody HospitalAddrRequest hospitalAddrRequest){
-        hospitalAddrRequest.setId(hospital_id);
-        hospitalAddrRequest.setAddr(String.valueOf(hospital_addr));
-        //webClient.post().uri("http://localhost:9091/consent/doctor/create")
-        //String response = "added";
-        return ResponseEntity.accepted().body(hospitalAddrRequest);
-    }
+
 
 }
