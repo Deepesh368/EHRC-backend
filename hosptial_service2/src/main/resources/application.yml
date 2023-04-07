@@ -1,16 +1,16 @@
 server:
-  port: 9005
+  port: 9006
 hospital:
-  id: "1"
-  name: "Mera-hospital"
+  id: "2"
+  name: "Mera-dusra-hospital"
 hospital-manager:
   address: "http://localhost:9001"
 spring:
   application:
-    name: hospital-service
+    name: hospital-service-2
 
   datasource:
-    url: jdbc:mysql://localhost:3306/hospital_one
+    url: jdbc:mysql://localhost:3306/hospital_two
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

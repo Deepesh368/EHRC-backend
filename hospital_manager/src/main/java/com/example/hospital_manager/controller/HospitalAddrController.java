@@ -62,14 +62,25 @@ public class HospitalAddrController {
     @GetMapping("/get-patient-records/{consent_id}")
     public ResponseEntity<?>get_patient_records(@PathVariable String consent_id){
         Consent consent = webClient.get().uri("http://localhost:9002/consent/get_consent?consent_id="+consent_id).retrieve().bodyToMono(Consent.class).block();
+        List<PatientRecord> pr_list  =new ArrayList<>();
         if(consent==null)
-            return ResponseEntity.accepted().body("consent not given to view the data");
+            return ResponseEntity.accepted().body(pr_list);
+        String status = consent.getStatus();
+        if(!status.equals("accepted")) {
+            PatientRecord p = new PatientRecord();
+            p.setReportDetails("Consent not given to view data");
+            p.setReportDetails("consent not given to view data");
+            p.setPatientId(consent.getPatientId());
+            pr_list.add(p);
+            return ResponseEntity.accepted().body(pr_list);
+        }
+
         HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(consent.getSendingHospitalId());
         String port = h.getAddr();
         String from = consent.getConsentStartDate();
         String to =consent.getConsentEndDate();
         String patient_id = consent.getPatientId();
-        List<PatientRecord> pr_list = webClient.get().uri("http://localhost:"+port+"/records/find_all/"+from+"/"+to+"/"+patient_id).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+        pr_list = webClient.get().uri("http://localhost:"+port+"/api/v1/hospital-records/find_all/"+from+"/"+to+"/"+patient_id).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);
     }
 

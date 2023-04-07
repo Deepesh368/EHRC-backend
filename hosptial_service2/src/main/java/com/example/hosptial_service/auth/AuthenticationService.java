@@ -10,6 +10,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.print.Doc;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -40,7 +43,7 @@ public class AuthenticationService {
             .role(Role.ROLE_ADMIN)
             .build();
     if(!repository.existsByEmail(request.getEmail()))
-      repository.save(user);
+         repository.save(user);
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
             .token(jwtToken)
