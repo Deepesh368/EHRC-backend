@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hosptial_service.entity.PatientRecord;
 import com.example.hosptial_service.service.PatientRecordService;
-
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/api/v1/hospital-records")
 public class PatientRecordController {
