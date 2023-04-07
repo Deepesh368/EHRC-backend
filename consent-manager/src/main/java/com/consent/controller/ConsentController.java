@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/consent")
 public class ConsentController {

@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/api/v1/hospital-doctor")
 public class DoctorController {
