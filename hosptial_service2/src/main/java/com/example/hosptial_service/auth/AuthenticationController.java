@@ -1,23 +1,16 @@
-package com.alibou.security.auth;
+package com.example.hosptial_service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin( origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
   private final AuthenticationService service;
-
-  @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(
-      @RequestBody RegisterRequest request
-  ) {
-    return ResponseEntity.ok(service.register(request));
-  }
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
