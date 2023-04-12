@@ -41,9 +41,18 @@ public class PatientRecordController {
     public List<PatientRecord> findByDateOfVisitAndPatientId(@PathVariable("from") String d1,@PathVariable("to") String d2,@PathVariable("patient_id") String patient_id) throws ParseException{
         SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
         Date date1=f.parse(d1);  
-        Date date2=f.parse(d2);    
+        Date date2=f.parse(d2);
         return patientRecordService.findByDateOfVisitAndPatientId(date1, date2, patient_id);
     }
+    @GetMapping("/search_all")
+    public List<PatientRecord> searchAll(@QueryParam("from") String d1,@QueryParam("to") String d2,@QueryParam("patient_id") String patient_id,@QueryParam("record_type") String record_type,@QueryParam("severity") Integer severity) throws ParseException{
+        SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
+        Date date1=f.parse(d1);
+        Date date2=f.parse(d2);
+        return patientRecordService.findByCertainParams(date1,date2,patient_id,record_type,severity);
+    }
+
+
 
 
      

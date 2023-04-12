@@ -2,7 +2,7 @@ server:
   port: 9006
 hospital:
   id: "2"
-  name: "Mera-dusra-hospital"
+  name: "Mera-Dusra-hospital"
 hospital-manager:
   address: "http://localhost:9001"
 spring:

@@ -1,5 +1,6 @@
 package com.alibou.security.config;
 
+import com.alibou.security.entity.Patient;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,21 +28,23 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails);
+  public String generateToken(Patient user) {
+    return generateToken(new HashMap<>(), user);
   }
-
   public String generateToken(
       Map<String, Object> extraClaims,
-      UserDetails userDetails
+      Patient user
   ) {
     return Jwts
         .builder()
         .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
+        .setSubject(user.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 *60 * 24))
         .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+            .claim("name",user.getName())
+            .claim("email",user.getEmail())
+            .claim("id",user.getId())
         .compact();
   }
 

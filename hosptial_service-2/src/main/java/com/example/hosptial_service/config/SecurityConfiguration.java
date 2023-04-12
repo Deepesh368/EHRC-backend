@@ -30,7 +30,7 @@ public class SecurityConfiguration {
         .csrf()
         .disable()
         .authorizeHttpRequests()
-        .requestMatchers("/api/v1/auth/**","/api/v1/hospital-records/**")
+        .requestMatchers("/api/v1/auth/**" , "/api/v1/hospital-records/**")
           .permitAll()
         .anyRequest()
           .authenticated()
@@ -39,9 +39,8 @@ public class SecurityConfiguration {
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-    ;
-
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    http.cors();
     return http.build();
   }
 }

@@ -25,27 +25,27 @@ public class HosptialServiceApplication implements CommandLineRunner {
 
 		SpringApplication.run(HosptialServiceApplication.class,args);
 	}
-//
-//	private static void startInstance( String configFile,String [] args) {
-//		// Create a Spring application context with the specified configuration file
-//		ConfigurableApplicationContext context = new SpringApplicationBuilder(HosptialServiceApplication.class)
-//				.properties("spring.config.location=" + configFile)
-//				.run();
-//
-//		// Configure the embedded web server to listen on the specified port
-//		ConfigurableWebServerFactory serverFactory = context.getBean(ConfigurableWebServerFactory.class);
-//		//serverFactory.setPort(port);
-//
-//		// Connect to the database using the provided configuration properties
-//		DataSource dataSource = context.getBean(DataSource.class);
-//
-//		// Run the Spring Boot application with the embedded web server and database connection
-//		SpringApplication.run(HosptialServiceApplication.class,args);
-//	}
-//	@Bean
-//	public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
-//		return new TomcatServletWebServerFactory();
-//	}
+
+	private static void startInstance( String configFile,String [] args) {
+		// Create a Spring application context with the specified configuration file
+		ConfigurableApplicationContext context = new SpringApplicationBuilder(HosptialServiceApplication.class)
+				.properties("spring.config.location=" + configFile)
+				.run();
+
+		// Configure the embedded web server to listen on the specified port
+		ConfigurableWebServerFactory serverFactory = context.getBean(ConfigurableWebServerFactory.class);
+		//serverFactory.setPort(port);
+
+		// Connect to the database using the provided configuration properties
+		DataSource dataSource = context.getBean(DataSource.class);
+
+		// Run the Spring Boot application with the embedded web server and database connection
+		SpringApplication.run(HosptialServiceApplication.class,args);
+	}
+	@Bean
+	public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
+		return new TomcatServletWebServerFactory();
+	}
 
 	@Override
 	public void run(String... arg0) throws Exception{

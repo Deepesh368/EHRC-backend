@@ -25,5 +25,17 @@ public class PatientRecordServiceImpl implements PatientRecordService {
     public List<PatientRecord>findByDateOfVisitAndPatientId(Date d1,Date d2,String patient_id){
         return patientRecordRepo.findByDateOfVisitAndPatientId(d1,d2,patient_id);
     }
+    @Override
+    public List<PatientRecord>findByCertainParams(Date d1,Date d2,String patient_id,String record_type,Integer severity){
+        if(record_type.equalsIgnoreCase("All") && severity==100)
+                return patientRecordRepo.findByDateOfVisitAndPatientId(d1,d2,patient_id);
+        if(record_type.equalsIgnoreCase("All") && severity!=100)
+            return patientRecordRepo.findByDateOfVisitAndPatientIdAndSeverity(d1,d2,patient_id,severity);
+        if(!record_type.equalsIgnoreCase("All") && severity==100)
+            return patientRecordRepo.findByDateOfVisitAndPatientIdAndRecordType(d1,d2,patient_id,record_type);
+
+        return patientRecordRepo.findByDateOfVisitAndPatientIdAndRecordTypeAndSeverity(d1,d2,patient_id,record_type,severity);
+    }
+
     
 }

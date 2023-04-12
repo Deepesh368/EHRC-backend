@@ -26,8 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class Patient implements UserDetails {
 
   @Id
-  @GeneratedValue
-  private Integer id;
+  private String id;
   private String name;
   private String email;
   private String password;
