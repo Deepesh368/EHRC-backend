@@ -1,4 +1,5 @@
 package com.example.hosptial_service.config;
+import com.example.hosptial_service.repo.DoctorRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtService jwtService;
   private final UserDetailsService userDetailsService;
+
+  private final DoctorRepo doctorRepo;
 
   @Override
   protected void doFilterInternal(
@@ -69,7 +72,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // once we get the token , now validate
-
+//    String id = request.getParameter("user_id");
+//    Integer pk = Integer.parseInt(id);
+//    var doctor  = doctorRepo.findById(user_id);
+//
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
       UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

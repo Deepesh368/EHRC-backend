@@ -3,6 +3,7 @@ import com.example.hosptial_service.config.JwtService;
 import com.example.hosptial_service.entity.Doctor;
 import com.example.hosptial_service.entity.Role;
 import com.example.hosptial_service.exceptions.ApiException;
+import com.example.hosptial_service.exceptions.DuplicatedUserInfoException;
 import com.example.hosptial_service.repo.DoctorRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,9 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.print.Doc;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -21,6 +19,9 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   public AuthenticationResponse register(RegisterRequest request) {
+    if(repository.existsByEmail(request.getEmail())){
+      throw new DuplicatedUserInfoException(String.format("Email %s already been used", request.getEmail()));
+    }
     var user = Doctor.builder().name(request.getName())
             .departmant(request.getDepartmant())
             .position(request.getPosition())
@@ -43,7 +44,7 @@ public class AuthenticationService {
             .role(Role.ROLE_ADMIN)
             .build();
     if(!repository.existsByEmail(request.getEmail()))
-         repository.save(user);
+      repository.save(user);
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
             .token(jwtToken)

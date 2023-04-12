@@ -1,5 +1,6 @@
 package com.example.hosptial_service.config;
 
+import com.example.hosptial_service.entity.Doctor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,21 +29,25 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails) {
+  public String generateToken(Doctor userDetails) {
     return generateToken(new HashMap<>(), userDetails);
   }
 
   public String generateToken(
       Map<String, Object> extraClaims,
-      UserDetails userDetails
+      Doctor user
   ) {
     return Jwts
         .builder()
         .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
+        .setSubject(user.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
         .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+            .claim("role", user.getRole())
+            .claim("name", user.getName())
+            .claim("id", user.getId())
+            .claim("email", user.getEmail())
         .compact();
   }
 
