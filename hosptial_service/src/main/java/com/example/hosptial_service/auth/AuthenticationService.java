@@ -3,7 +3,6 @@ import com.example.hosptial_service.config.JwtService;
 import com.example.hosptial_service.entity.Doctor;
 import com.example.hosptial_service.entity.Role;
 import com.example.hosptial_service.exceptions.ApiException;
-import com.example.hosptial_service.exceptions.DuplicatedUserInfoException;
 import com.example.hosptial_service.repo.DoctorRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +19,7 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
   public AuthenticationResponse register(RegisterRequest request) {
     if(repository.existsByEmail(request.getEmail())){
-      throw new DuplicatedUserInfoException(String.format("Email %s already been used", request.getEmail()));
+      throw new ApiException(String.format("Email %s already user exist", request.getEmail()));
     }
     var user = Doctor.builder().name(request.getName())
             .departmant(request.getDepartmant())

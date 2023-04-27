@@ -1,7 +1,8 @@
+credentials:
+  service-name: hospital-manager-service
+  password: 456
 server:
   port: 9001
-#consent-manager:
-#  port: "9001"
 spring:
   application:
     name: hospital-manager-service

@@ -1,44 +1,63 @@
 package com.alibou.security.controller;
 
+import com.alibou.security.auth.AuthenticationResponse;
 import com.alibou.security.entity.Consent;
 import com.alibou.security.entity.Patient;
 import com.alibou.security.entity.PatientRecord;
 import com.alibou.security.repository.PatientRepository;
 import com.alibou.security.service.PatientService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/api/v1/patient")
 public class PatientController {
-
   private String consentServer = "http://localhost:9002/consent/";
   private String hospitalManager = "http://localhost:9001/";
   @Autowired
   private PatientService patientService;
-
   @Autowired
   private WebClient webClient;
-  @GetMapping("/get-details")
+  @Value("${credentials.service-name}")
+  private String serviceName;
+  @Value("${credentials.password}")
+  private String password;
+  Map<String,String>auth;
+
+  @PostConstruct
+  public void init() {
+    auth = new HashMap<>();
+    auth.put("serviceName", serviceName);
+    auth.put("password", password);
+  }
+    @GetMapping("/get-details")
   public ResponseEntity<?>hello(@AuthenticationPrincipal Patient patient) {
     return ResponseEntity.accepted().body(patient);
   }
   @GetMapping("/all-consents")
   ResponseEntity<?> getAllConsents(@AuthenticationPrincipal Patient patient){
     String patientId = patient.getId();
-    List<Consent> consent_list = webClient.get().uri(consentServer + "patient/getall?patientid=" + patientId).retrieve().bodyToFlux(Consent.class).collectList().block();
+    AuthenticationResponse resp = webClient.post().uri(consentServer+"api/v1/auth/authenticate").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+    String token = resp.getToken();
+    List<Consent> consent_list = webClient.get().uri(consentServer + "patient/getall?patientid=" + patientId).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).retrieve().bodyToFlux(Consent.class).collectList().block();
     return ResponseEntity.ok(consent_list);
   }
 
   @PutMapping("/update-consent")
   ResponseEntity<?> updateConsents(@RequestParam("consent_id") String consent_id, @RequestBody Map<String, String> payload){
-    String response = webClient.put().uri(consentServer+"patient/update?consent_id=" + consent_id).bodyValue(payload).retrieve().bodyToMono(String.class).block();
+    AuthenticationResponse resp = webClient.post().uri(consentServer+"/api/v1/auth/authenticate").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+    String token = resp.getToken();
+    String response = webClient.put().uri(consentServer+"patient/update?consent_id=" + consent_id).bodyValue(payload).header(HttpHeaders.AUTHORIZATION,"Bearer "+token).retrieve().bodyToMono(String.class).block();
     return ResponseEntity.accepted().body(response);
   }
 
