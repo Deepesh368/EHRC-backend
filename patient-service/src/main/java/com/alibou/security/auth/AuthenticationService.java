@@ -45,6 +45,9 @@ public class AuthenticationService {
 
   public AuthenticationResponse register(RegisterRequest request) {
     String abId = getAlphaNumericString(10);
+    if(repository.existsByEmail(request.getEmail())){
+      throw new ApiException(String.format("Email %s already user exist", request.getEmail()));
+    }
     while(repository.existsById(abId)){
       abId = getAlphaNumericString(10);
     }
@@ -74,7 +77,7 @@ public class AuthenticationService {
       );
     }
     catch (BadCredentialsException e) {
-      System.out.println("Invalid Detials !!");
+      System.out.println("Invalid Details !!");
       throw new ApiException("Invalid username or password !!");
 
     }

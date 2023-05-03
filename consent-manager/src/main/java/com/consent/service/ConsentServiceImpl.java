@@ -43,7 +43,7 @@ public class ConsentServiceImpl implements ConsentService{
             random = getRandom(10);
         }
         consent.setRequestId(random);
-        if(consent.getStatus()==null || !consent.getStatus().matches("Emergency")) {
+        if(consent.getStatus()==null || !consent.getStatus().equalsIgnoreCase("Emergency")) {
             consent.setStatus("Pending");
         }
         consent.setConsentEndDate(null);

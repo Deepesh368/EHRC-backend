@@ -79,7 +79,7 @@ public class HosptialServiceApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception{
 		RegisterRequest request = new  RegisterRequest("Admin", "Admin@Admin", "Admin");
-		webClient.post().uri(hospitalManager+"hospital-addr/add-hospital").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+        webClient.post().uri(hospitalManager+"/hospital-addr/api/v1/auth/register").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
 		authenticationService.register_admin(request);
 		System.out.println("SUCCESS");
 	}
