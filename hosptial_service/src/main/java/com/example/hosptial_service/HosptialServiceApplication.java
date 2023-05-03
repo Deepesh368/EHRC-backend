@@ -51,6 +51,7 @@ public class HosptialServiceApplication implements CommandLineRunner {
 	public void run(String... arg0) throws Exception{
 		RegisterRequest request = new  RegisterRequest("Admin", "Admin@Admin", "Admin");
 		authenticationService.register_admin(request);
+		System.out.println("SUCESS");
 	}
 
 }

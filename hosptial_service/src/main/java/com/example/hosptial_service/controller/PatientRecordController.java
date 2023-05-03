@@ -2,12 +2,15 @@ package com.example.hosptial_service.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import jakarta.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,20 +40,21 @@ public class PatientRecordController {
         return  patientRecordService.findByPatientId(patient_id);
 
     }
-    @GetMapping("/find_all/{from}/{to}/{patient_id}")
-    public List<PatientRecord> findByDateOfVisitAndPatientId(@PathVariable("from") String d1,@PathVariable("to") String d2,@PathVariable("patient_id") String patient_id) throws ParseException{
-        SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
-        Date date1=f.parse(d1);  
-        Date date2=f.parse(d2);
-        return patientRecordService.findByDateOfVisitAndPatientId(date1, date2, patient_id);
-    }
-    @GetMapping("/search_all")
-    public List<PatientRecord> searchAll(@QueryParam("from") String d1,@QueryParam("to") String d2,@QueryParam("patient_id") String patient_id,@QueryParam("record_type") String record_type,@QueryParam("severity") Integer severity) throws ParseException{
-        SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
-        Date date1=f.parse(d1);
-        Date date2=f.parse(d2);
-        return patientRecordService.findByCertainParams(date1,date2,patient_id,record_type,severity);
-    }
+//    @GetMapping("/find_all/{from}/{to}/{patient_id}")
+//    public List<PatientRecord> findByDateOfVisitAndPatientId(@PathVariable("from") String d1,@PathVariable("to") String d2,@PathVariable("patient_id") String patient_id) throws ParseException{
+//        SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
+//        Date date1=f.parse(d1);
+//        Date date2=f.parse(d2);
+//        return patientRecordService.findByDateOfVisitAndPatientId(date1, date2, patient_id);
+//    }
+//    @GetMapping("/search_all")
+//    public List<PatientRecord> searchAll(@QueryParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd")Date d1, @QueryParam("to") String d2, @QueryParam("patient_id") String patient_id, @QueryParam("record_type") String record_type, @QueryParam("severity") Integer severity) throws ParseException{
+//        System.out.print("HELLOO " +d1 + " " + d2 + " " + patient_id + " " + record_type + " " + severity);
+//        SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
+////        Date date1=f.parse(d1);
+//        Date date2=f.parse(d2);
+//        return patientRecordService.findByCertainParams(d1,date2,patient_id,record_type,severity);
+//    }
 
 
 
