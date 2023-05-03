@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegisterRequest {
+public class AuthenticationServiceRequest {
 
   private String serviceName;
   private String password;

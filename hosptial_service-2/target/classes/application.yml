@@ -1,11 +1,10 @@
 server:
   port: 9005
-credentials:
+hospital:
   id: "1"
   name: "Mera-hospital"
-  password: "abc"
 hospital-manager:
-  address: "http://localhost:9001/"
+  address: "http://localhost:9001"
 spring:
   application:
     name: hospital-service

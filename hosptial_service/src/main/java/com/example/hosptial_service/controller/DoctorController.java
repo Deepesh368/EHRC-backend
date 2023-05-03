@@ -25,7 +25,7 @@ public class DoctorController {
     @Autowired
     private DoctorRepo doctorRepo;
     @Autowired private WebClient webClient;
-    @Value("${hospital.id}")
+    @Value("${credentials.id}")
     private String hospital_id;
 
     @Value("${server.port}")

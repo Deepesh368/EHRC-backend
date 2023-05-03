@@ -98,6 +98,4 @@ public class HospitalAddrController {
         pr_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("from", from.toString()).queryParam("to", to.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);
     }
-
-
 }
