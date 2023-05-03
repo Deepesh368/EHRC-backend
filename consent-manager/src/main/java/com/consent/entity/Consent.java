@@ -1,8 +1,6 @@
 package com.consent.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,14 +23,20 @@ public class Consent {
     private Date reqStartDate;
     private Date reqEndDate;
     private Date reqValidity;
+    @Temporal(TemporalType.DATE)
+
     private Date consentStartDate;
+    @Temporal(TemporalType.DATE)
     private Date consentEndDate;
+    @Temporal(TemporalType.DATE)
     private Date consentValidity;
+    private String record_type;
+    private Integer severity;
 
     public Consent() {
     }
 
-    public Consent(Integer doctorId, String patientId, String requestingHospitalId, String sendingHospitalId,Date reqStartDate,Date reqEndDate,Date reqValidity) {
+    public Consent(Integer doctorId, String patientId, String requestingHospitalId, String sendingHospitalId,Date reqStartDate,Date reqEndDate,Date reqValidity, String record_type, Integer severity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.sendingHospitalId = sendingHospitalId;
@@ -40,9 +44,11 @@ public class Consent {
         this.reqEndDate = reqEndDate;
         this.reqValidity = reqValidity;
         this.requestingHospitalId = requestingHospitalId;
+        this.record_type = record_type;
+        this.severity = severity;
     }
 
-    public Consent(Integer doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, Date reqStartDate,Date reqEndDate,Date reqValidity) {
+    public Consent(Integer doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, Date reqStartDate,Date reqEndDate,Date reqValidity, String record_type, Integer severity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.requestingHospitalId = requestingHospitalId;
@@ -51,5 +57,7 @@ public class Consent {
         this.reqStartDate = reqStartDate;
         this.reqEndDate = reqEndDate;
         this.reqValidity = reqValidity;
+        this.record_type = record_type;
+        this.severity = severity;
     }
 }

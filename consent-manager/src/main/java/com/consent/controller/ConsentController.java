@@ -85,13 +85,4 @@ public class ConsentController {
         }
         return ResponseEntity.ok(consent);
     }
-    @GetMapping("/get-consent/{consent_id}")
-    public ResponseEntity<?> getConsent2(@PathVariable String consent_id){
-        Consent consent = consentService.getConsent(consent_id);
-        String status = consent.getStatus();
-        if(consent==null || (!status.matches("Emegency") && !status.matches("Accepted"))){
-            return ResponseEntity.ok(null);
-        }
-        return ResponseEntity.ok(consent);
-    }
 }
