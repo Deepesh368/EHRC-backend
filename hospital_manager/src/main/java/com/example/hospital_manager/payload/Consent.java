@@ -1,8 +1,6 @@
 package com.example.hospital_manager.payload;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +19,11 @@ public class Consent {
     private String reqStartDate;
     private String reqEndDate;
     private String reqValidity;
+    @Temporal(TemporalType.DATE)
+
     private String consentStartDate;
+    @Temporal(TemporalType.DATE)
+
     private String consentEndDate;
     private String consentValidity;
     private String record_type;

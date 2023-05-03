@@ -22,15 +22,37 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
+  static String getAlphaNumericString(int n)
+  {
+
+    String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            + "0123456789"
+            + "abcdefghijklmnopqrstuvxyz";
+
+    String sb = "ABHA";
+
+    for (int i = 0; i < n; i++) {
+      int index
+              = (int)(AlphaNumericString.length()
+              * Math.random());
+
+      sb = sb + (AlphaNumericString
+              .charAt(index));
+    }
+
+    return sb;
+  }
+
   public AuthenticationResponse register(RegisterRequest request) {
-    if(repository.existsById(request.getAbhaId())){
-      throw new ApiException(String.format("ABHA Id is already registered", request.getAbhaId()));
+    String abId = getAlphaNumericString(10);
+    while(repository.existsById(abId)){
+      abId = getAlphaNumericString(10);
     }
     var user = Patient.builder()
         .name(request.getName())
         .email(request.getEmail())
         .phone(request.getPhone())
-        .id(request.getAbhaId())
+        .id(abId)
         .password(passwordEncoder.encode(request.getPassword()))
         .role(Role.USER)
         .build();
