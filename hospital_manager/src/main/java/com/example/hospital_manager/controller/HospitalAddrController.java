@@ -1,11 +1,15 @@
 package com.example.hospital_manager.controller;
 
+import com.example.hospital_manager.auth.AuthenticationResponse;
 import com.example.hospital_manager.entity.HospitalAddr;
 import com.example.hospital_manager.payload.Consent;
 import com.example.hospital_manager.payload.HospitalAddrRequest;
 import com.example.hospital_manager.payload.PatientRecord;
 import com.example.hospital_manager.repo.HospitalAddrRepo;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,6 +17,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/hospital-addr")
@@ -20,6 +26,18 @@ public class HospitalAddrController {
     @Autowired
     private HospitalAddrRepo hospitalAddrRepo;
     @Autowired private WebClient webClient;
+    private String consentServer = "http://localhost:9002/consent/";
+    @Value("${credentials.service-name}")
+    private String serviceName;
+    @Value("${credentials.password}")
+    private String password;
+    Map<String,String> auth;
+    @PostConstruct
+    public void init() {
+        auth = new HashMap<>();
+        auth.put("serviceName", serviceName);
+        auth.put("password", password);
+    }
     private HashMap<String, String> convert(String res) {
         HashMap<String, String> map = new HashMap<>();
         map.put("response", res);
@@ -38,25 +56,17 @@ public class HospitalAddrController {
     }
     @GetMapping("/doctor/get-consents/{doctor_id}/{hospital_id}")
     public ResponseEntity<?>get_consents_doctor(@PathVariable Integer doctor_id,@PathVariable String hospital_id){
-//        List<Consent>s_list =webClient.get()
-//                .uri(uriBuilder -> uriBuilder.path("http://localhost:9002/consent/get/doctor")
-//                        .queryParam("doctor_id", doctorId)
-//                        .queryParam("hospital_id", hospitalId)
-//                        .build())
-//                .retrieve()
-//                .bodyToFlux(Consent.class).collectList().block();
-        List<Consent>s_list = webClient.get().uri("http://localhost:9002/consent/get/doctor/"+doctor_id+"/"+hospital_id).retrieve().bodyToFlux(Consent.class).collectList().block();
+        AuthenticationResponse resp = webClient.post().uri(consentServer+"api/v1/auth/authenticate").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+        String token = resp.getToken();
+        List<Consent>s_list = webClient.get().uri(consentServer+"get/doctor/"+doctor_id+"/"+hospital_id).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).retrieve().bodyToFlux(Consent.class).collectList().block();
         return ResponseEntity.accepted().body(s_list);
     }
-//    @GetMapping("/patient/get-consent/{patient_id}")
-//    public ResponseEntity<?>get_consents_patient(@PathVariable Integer patient_id){
-//        List<Consent>s_list = webClient.get().uri("http://localhost:9091/consent/patient/"+patient_id).retrieve().bodyToFlux(Consent.class).collectList().block();
-//        return ResponseEntity.accepted().body(s_list);
-//    }
     @PostMapping("/create-consent")
    public ResponseEntity<?>post_consent(@RequestBody Consent consent){
         String response = "forwarded";
-        webClient.post().uri("http://localhost:9002/consent/doctor/create").bodyValue(consent).retrieve().bodyToMono(Consent.class).block();
+        AuthenticationResponse resp = webClient.post().uri(consentServer+"api/v1/auth/authenticate").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+        String token = resp.getToken();
+        webClient.post().uri(consentServer+"/doctor/create").bodyValue(consent).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).retrieve().bodyToMono(Consent.class).block();
         return ResponseEntity.accepted().body(convert(response));
     }
     @GetMapping("/get-patient-records/{consent_id}")
@@ -74,7 +84,6 @@ public class HospitalAddrController {
             pr_list.add(p);
             return ResponseEntity.accepted().body(pr_list);
         }
-
         HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(consent.getSendingHospitalId());
         String port = h.getAddr();
         String from = consent.getConsentStartDate();

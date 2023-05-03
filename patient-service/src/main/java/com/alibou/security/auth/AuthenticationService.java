@@ -23,6 +23,9 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
+    if(repository.existsById(request.getAbhaId())){
+      throw new ApiException(String.format("ABHA Id is already registered", request.getAbhaId()));
+    }
     var user = Patient.builder()
         .name(request.getName())
         .email(request.getEmail())
