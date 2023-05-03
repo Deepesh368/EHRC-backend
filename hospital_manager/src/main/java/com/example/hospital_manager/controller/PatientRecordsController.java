@@ -19,7 +19,7 @@ public class PatientRecordsController{
 
     @GetMapping("/get-records-hospital")
     ResponseEntity<?> getRecords(@RequestParam("patient_id") String patientId, @RequestParam("hospital_id") String hos_id){
-        HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(hos_id);
+        HospitalAddr h= hospitalAddrRepo.findById(hos_id).orElseThrow();
         String port = h.getAddr();
         List<PatientRecord> pr_list = webClient.get().uri("http://localhost:"+port+"/api/v1/hospital-records/find_all?patient_id="+ patientId).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);

@@ -82,26 +82,24 @@ public class HospitalAddrController {
             return ResponseEntity.accepted().body(pr_list);
 
         String status = consent.getStatus();
-        if(status.equals("emergency")){
+        if(status.equalsIgnoreCase("emergency")){
             consent.setConsentStartDate(consent.getReqStartDate());
             consent.setConsentEndDate(consent.getReqEndDate());
         }
         String startDate = consent.getConsentStartDate();
         String endDate =consent.getConsentEndDate();
 
-        if(!status.equals("accepted") && !status.equals("emergency")) {
+        if(!status.equalsIgnoreCase("accepted") && !status.equalsIgnoreCase("emergency")) {
             PatientRecord p = new PatientRecord();
             p.setReportDetails("Consent not given to view data");
             p.setPatientId(consent.getPatientId());
             pr_list.add(p);
             return ResponseEntity.accepted().body(pr_list);
         }
-        HospitalAddr h= hospitalAddrRepo.findHospitalAddrById(consent.getSendingHospitalId());
+        HospitalAddr h= hospitalAddrRepo.findById(consent.getSendingHospitalId()).orElseThrow();
         String port = h.getAddr();
         String patient_id = consent.getPatientId();
         pr_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("startDate", startDate.toString()).queryParam("endDate", endDate.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
         return ResponseEntity.accepted().body(pr_list);
     }
-
-
 }

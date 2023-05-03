@@ -18,24 +18,24 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
-    if(repository.existsByServiceName(request.getServiceName())){
-      throw new RuntimeException("This service is already registered");
-    }
+  public AuthenticationResponse register(RegisterServiceRequest request) {
+
     var user = User.builder()
             .serviceName(request.getServiceName())
         .password(passwordEncoder.encode(request.getPassword()))
         .role("ROLE_AUTH")
         .build();
-    var savedUser = repository.save(user);
+    if(!repository.existsByServiceName(request.getServiceName())){
+//      throw new RuntimeException("This service is already registered");
+      repository.save(user);
+    }
     var jwtToken = jwtService.generateToken(user);
-//    saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
         .token(jwtToken)
         .build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public AuthenticationResponse authenticate(AuthenticationServiceRequest request) {
     try {
       authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(
@@ -45,7 +45,7 @@ public class AuthenticationService {
       );
     }
     catch (BadCredentialsException e) {
-      System.out.println("Invalid Detials !!");
+      System.out.println("Invalid Details !!");
       throw new RuntimeException("Authentication failed");
     }
 
