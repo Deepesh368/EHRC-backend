@@ -18,7 +18,7 @@ public interface PatientRecordRepo extends JpaRepository<PatientRecord,String> {
     @Query(value = "SELECT * FROM patientrecord p WHERE p.patient_id = ?3 AND (p.date_of_visit BETWEEN ?1 AND ?2) AND p.record_type=?4 AND p.severity=?5",nativeQuery = true)
     public List<PatientRecord>findByDateOfVisitAndPatientIdAndRecordTypeAndSeverity(Date startDate,Date endDate,String patient_id,String record_type,Integer severity);
 
-    @Query(value = "SELECT * FROM patientrecord p WHERE p.patient_id = ?3 AND (p.date_of_visit BETWEEN ?1 AND ?2) AND p.severity=?4",nativeQuery = true)
+    @Query(value = "SELECT * FROM patientrecord p WHERE p.patient_id = ?3 AND (p.date_of_visit BETWEEN ?1 AND ?2) AND p.severity>=?4",nativeQuery = true)
     public List<PatientRecord>findByDateOfVisitAndPatientIdAndSeverity(Date startDate,Date endDate,String patient_id,Integer severity);
 
 }
