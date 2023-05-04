@@ -1,17 +1,20 @@
 credentials:
   service-name: patient-service
   password: 123
+  id: patient123
+hospital-manager:
+  address: "http://localhost:9001/"
 server:
   port: 9003
-  ssl:
-    key-store: keystore.p12
-    key-store-password: pratyush
-    key-store-type: PKCS12
-    key-alias: mydomain
-    enabled: true
+#  ssl:
+#    key-store: keystore.p12
+#    key-store-password: pratyush
+#    key-store-type: PKCS12
+#    key-alias: mydomain
+#    enabled: true
 spring:
   application:
-    name: user-auth
+    name: patient-service
 
   datasource:
     url: jdbc:mysql://localhost:3306/patients

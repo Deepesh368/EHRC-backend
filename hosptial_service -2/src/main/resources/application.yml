@@ -1,0 +1,26 @@
+server:
+  port: 9006
+credentials:
+  id: "2"
+  name: "Mera-dusra-hospital"
+  password: "def"
+hospital-manager:
+  address: "http://localhost:9001/"
+spring:
+  application:
+    name: hospital-service-2
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/hospital_two
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    enabled: false

@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/patient-records")
 public class PatientRecordsController{
     @Autowired
     private HospitalAddrRepo hospitalAddrRepo;
     @Autowired private WebClient webClient;
-
     @GetMapping("/get-records-hospital")
     ResponseEntity<?> getRecords(@RequestParam("patient_id") String patientId, @RequestParam("hospital_id") String hos_id){
         HospitalAddr h= hospitalAddrRepo.findById(hos_id).orElseThrow();
