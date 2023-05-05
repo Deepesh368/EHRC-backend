@@ -2,15 +2,18 @@ package com.example.hospital_manager.controller;
 
 import com.example.hospital_manager.auth.AuthenticationResponse;
 import com.example.hospital_manager.entity.HospitalAddr;
+import com.example.hospital_manager.entity.PatientRecords;
 import com.example.hospital_manager.payload.Consent;
 import com.example.hospital_manager.payload.HospitalAddrRequest;
 import com.example.hospital_manager.payload.PatientRecord;
 import com.example.hospital_manager.repo.HospitalAddrRepo;
+import com.example.hospital_manager.repo.PatientRecordsRepo;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,6 +25,9 @@ import java.util.*;
 public class HospitalAddrController {
     @Autowired
     private HospitalAddrRepo hospitalAddrRepo;
+
+    @Autowired
+    private PatientRecordsRepo patientRecordsRepo;
     @Autowired private WebClient webClient;
     private String consentServer = "http://localhost:9002/consent/";
     @Value("${credentials.service-name}")
@@ -102,10 +108,32 @@ public class HospitalAddrController {
             pr_list.add(p);
             return ResponseEntity.accepted().body(pr_list);
         }
-        HospitalAddr h= hospitalAddrRepo.findById(consent.getSendingHospitalId()).orElseThrow();
-        String port = h.getAddr();
         String patient_id = consent.getPatientId();
-        pr_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("startDate", startDate.toString()).queryParam("endDate", endDate.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+        List<String> hospitalIds =patientRecordsRepo.findByPatientId(patient_id);
+
+
+        for(String hospital:hospitalIds){
+            HospitalAddr h= hospitalAddrRepo.findById(hospital).orElseThrow();
+            String port = h.getAddr();
+            List<PatientRecord> temp_list  =new ArrayList<>();
+            temp_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("startDate", startDate.toString()).queryParam("endDate", endDate.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+            pr_list.addAll(temp_list);
+        }
         return ResponseEntity.accepted().body(pr_list);
+    }
+
+    @PostMapping("/add-patient-hospital")
+    public ResponseEntity<?> addPatientHospital(@AuthenticationPrincipal HospitalAddr hospitalAddr, @RequestParam("patient-id") String patient_id){
+        System.out.println(patient_id);
+        PatientRecords patientRecords = new PatientRecords( patient_id, hospitalAddr.getId());
+        if(!patientRecordsRepo.existsByHospitalIdAndPatientId(hospitalAddr.getId(), patient_id)){
+            patientRecordsRepo.save(patientRecords);
+            System.out.println("HELLO");
+        }else{
+            System.out.println("HELLO BYE");
+
+        }
+        System.out.println(hospitalAddr.getId() + " " + patient_id);
+        return ResponseEntity.ok("Success");
     }
 }

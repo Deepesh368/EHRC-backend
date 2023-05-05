@@ -17,7 +17,6 @@ public class Consent {
     private Integer doctorId;
     private String patientId;
     private String requestingHospitalId;
-    private String sendingHospitalId;
     private String status;
     private Date dateOfRequest;
     private Date reqStartDate;
@@ -36,10 +35,9 @@ public class Consent {
     public Consent() {
     }
 
-    public Consent(Integer doctorId, String patientId, String requestingHospitalId, String sendingHospitalId,Date reqStartDate,Date reqEndDate,Date reqValidity, String record_type, Integer severity) {
+    public Consent(Integer doctorId, String patientId, String requestingHospitalId, Date reqStartDate,Date reqEndDate,Date reqValidity, String record_type, Integer severity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
-        this.sendingHospitalId = sendingHospitalId;
         this.reqStartDate = reqStartDate;
         this.reqEndDate = reqEndDate;
         this.reqValidity = reqValidity;
@@ -48,11 +46,10 @@ public class Consent {
         this.severity = severity;
     }
 
-    public Consent(Integer doctorId, String patientId,String requestingHospitalId, String sendingHospitalId, String status, Date reqStartDate,Date reqEndDate,Date reqValidity, String record_type, Integer severity) {
+    public Consent(Integer doctorId, String patientId,String requestingHospitalId,  String status, Date reqStartDate,Date reqEndDate,Date reqValidity, String record_type, Integer severity) {
         this.doctorId = doctorId;
         this.patientId = patientId;
         this.requestingHospitalId = requestingHospitalId;
-        this.sendingHospitalId = sendingHospitalId;
         this.status = status;
         this.reqStartDate = reqStartDate;
         this.reqEndDate = reqEndDate;
