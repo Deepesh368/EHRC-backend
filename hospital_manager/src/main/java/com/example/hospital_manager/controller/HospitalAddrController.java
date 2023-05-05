@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:3001")
 @RestController
@@ -78,6 +75,8 @@ public class HospitalAddrController {
         String token = getToken();
         Consent consent = webClient.get().uri("http://localhost:9002/consent/get_consent?consent_id="+consent_id).header(HttpHeaders.AUTHORIZATION, token).retrieve().bodyToMono(Consent.class).block();
         List<PatientRecord> pr_list  =new ArrayList<>();
+        // Get calender
+        Date now = new Date();
         if(consent==null)
             return ResponseEntity.accepted().body(pr_list);
 
@@ -92,6 +91,13 @@ public class HospitalAddrController {
         if(!status.equalsIgnoreCase("accepted") && !status.equalsIgnoreCase("emergency")) {
             PatientRecord p = new PatientRecord();
             p.setReportDetails("Consent not given to view data");
+            p.setPatientId(consent.getPatientId());
+            pr_list.add(p);
+            return ResponseEntity.accepted().body(pr_list);
+        }
+        if(now.after(consent.getConsentValidity())){
+            PatientRecord p = new PatientRecord();
+            p.setReportDetails("Consent Expired");
             p.setPatientId(consent.getPatientId());
             pr_list.add(p);
             return ResponseEntity.accepted().body(pr_list);

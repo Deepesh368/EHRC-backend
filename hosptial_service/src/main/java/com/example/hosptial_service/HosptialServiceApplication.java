@@ -51,7 +51,6 @@ public class HosptialServiceApplication implements CommandLineRunner {
 	}
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(HosptialServiceApplication.class,args);
 	}
 
@@ -81,7 +80,6 @@ public class HosptialServiceApplication implements CommandLineRunner {
 		RegisterRequest request = new  RegisterRequest("Admin", "Admin@Admin", "Admin");
         webClient.post().uri(hospitalManager+"/hospital-addr/api/v1/auth/register").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
 		authenticationService.register_admin(request);
-		System.out.println("SUCCESS");
 	}
 
 }

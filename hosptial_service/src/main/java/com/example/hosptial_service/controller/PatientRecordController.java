@@ -50,7 +50,6 @@ public class PatientRecordController {
 //    }
     @GetMapping("/search_all")
     public List<PatientRecord> searchAll(@QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate, @QueryParam("patient_id") String patient_id, @QueryParam("record_type") String record_type, @QueryParam("severity") Integer severity) throws ParseException{
-        System.out.println("HELLOO " +startDate + " " + endDate + " " + patient_id + " " + record_type + " " + severity);
         SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd");
         Date date1=f.parse(startDate);
         Date date2=f.parse(endDate);

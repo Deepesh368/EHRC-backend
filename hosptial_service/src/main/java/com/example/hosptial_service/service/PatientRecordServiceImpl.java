@@ -10,10 +10,37 @@ import com.example.hosptial_service.entity.PatientRecord;
 import com.example.hosptial_service.repo.PatientRecordRepo;
 @Service
 public class PatientRecordServiceImpl implements PatientRecordService {
+
+    static String getAlphaNumericString(int n)
+    {
+
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        String sb = "";
+
+        for (int i = 0; i < n; i++) {
+            int index
+                    = (int)(AlphaNumericString.length()
+                    * Math.random());
+
+            sb = sb + (AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb;
+    }
+
     @Autowired
     private PatientRecordRepo patientRecordRepo;
     @Override
     public String newUser(PatientRecord user) {
+        String id = getAlphaNumericString(10);
+        while(patientRecordRepo.existsById(id)){
+            id = getAlphaNumericString(10);
+        }
+        user.setId(id);
         patientRecordRepo.save(user);
         return "saved";
     }

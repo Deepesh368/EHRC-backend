@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 
 @Getter
 @Setter
@@ -25,7 +27,9 @@ public class Consent {
     @Temporal(TemporalType.DATE)
 
     private String consentEndDate;
-    private String consentValidity;
+    @Temporal(TemporalType.DATE)
+
+    private Date consentValidity;
     private String record_type;
     private Integer severity;
     public Consent() {
