@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -49,6 +50,12 @@ public class ConsentServiceImpl implements ConsentService{
         consent.setConsentEndDate(null);
         consent.setConsentStartDate(null);
         consent.setConsentValidity(null);
+        if(consent.getStatus().matches("Emergency")){
+            Calendar c = Calendar.getInstance();
+            c.setTime(now);
+            c.add(Calendar.WEEK_OF_MONTH, 2);
+            consent.setConsentValidity(c.getTime());
+        }
         consent.setDateOfRequest(now);
         consentRepo.save(consent);
         return "Success";
