@@ -26,11 +26,11 @@ public class AuthenticationService {
         .role("ROLE_AUTH")
             .id(request.getId())
         .build();
+    String jwtToken = jwtService.generateToken(user);;
     if(!repository.existsById(request.getId())){
-//      throw new RuntimeException("This service is already registered");
       repository.save(user);
+
     }
-    var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
         .token(jwtToken)
         .build();
