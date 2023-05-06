@@ -77,7 +77,7 @@ public class HospitalAddrController {
    public ResponseEntity<?>post_consent(@RequestBody Consent consent){
         String response = "forwarded";
         String token = getToken();
-        webClient.post().uri(consentServer+"/doctor/create").bodyValue(consent).header(HttpHeaders.AUTHORIZATION, token).retrieve().bodyToMono(Consent.class).block();
+        webClient.post().uri(consentServer+"doctor/create").bodyValue(consent).header(HttpHeaders.AUTHORIZATION, token).retrieve().bodyToMono(Consent.class).block();
         return ResponseEntity.accepted().body(convert(response));
     }
     @GetMapping("/get-patient-records/{consent_id}")
