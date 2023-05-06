@@ -39,6 +39,16 @@ public class AuthenticationController {
     webClient.post().uri(ip_address+port+"/api/v1/auth/register-admin").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
     return ResponseEntity.ok(service.register(request));
   }
+
+  @PostMapping("/patient-register")
+  public ResponseEntity<AuthenticationResponse> registerPatients(
+          @RequestBody RegisterServiceRequest request
+  ) {
+    auth = new HashMap<>();
+    auth.put("email", serviceName);
+    auth.put("password", password);
+   return ResponseEntity.ok(service.register(request));
+  }
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationServiceRequest request

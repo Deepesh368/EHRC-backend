@@ -45,7 +45,7 @@ public class SecurityApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception{
 		AuthenticationResponse resp = webClient.post().uri(consentServer+"api/v1/auth/register").bodyValue(auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
-		AuthenticationResponse resp2 = webClient.post().uri(hospitalManagerServer+"hospital-addr/api/v1/auth/register").bodyValue(hospitalManagerAuth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+		AuthenticationResponse resp2 = webClient.post().uri(hospitalManagerServer+"hospital-addr/api/v1/auth/patient-register").bodyValue(hospitalManagerAuth).retrieve().bodyToMono(AuthenticationResponse.class).block();
 
 	}
 	public static void main(String[] args) {
