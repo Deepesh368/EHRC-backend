@@ -53,8 +53,8 @@ public class JwtService {
             .claim("name", user.getName())
             .claim("id", user.getId())
             .claim("email", user.getEmail())
-            .claim("hospital_name",hospital_id)
-            .claim("hospital_id",hospital_name)
+            .claim("hospital_name",hospital_name)
+            .claim("hospital_id",hospital_id)
         .compact();
   }
 

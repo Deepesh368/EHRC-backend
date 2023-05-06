@@ -35,11 +35,15 @@ public class HospitalAddrController {
     @Value("${credentials.password}")
     private String password;
     Map<String,String> auth;
+    Map<String,String>hospital_auth;
     @PostConstruct
     public void init() {
         auth = new HashMap<>();
         auth.put("serviceName", serviceName);
         auth.put("password", password);
+        hospital_auth = new HashMap<>();
+        hospital_auth.put("email",serviceName);
+        hospital_auth.put("password",password);
     }
     private HashMap<String, String> convert(String res) {
         HashMap<String, String> map = new HashMap<>();
@@ -116,7 +120,9 @@ public class HospitalAddrController {
             HospitalAddr h= hospitalAddrRepo.findById(hospital).orElseThrow();
             String port = h.getAddr();
             List<PatientRecord> temp_list  =new ArrayList<>();
-            temp_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("startDate", startDate.toString()).queryParam("endDate", endDate.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
+            AuthenticationResponse rt = webClient.post().uri("http://"+"localhost"+port+"/api/v1/auth/authenticate").bodyValue(hospital_auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+            String hospital_token ="Bearer "+rt.getToken();
+            temp_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("startDate", startDate.toString()).queryParam("endDate", endDate.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).header(HttpHeaders.AUTHORIZATION, hospital_token).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
             pr_list.addAll(temp_list);
         }
         return ResponseEntity.accepted().body(pr_list);
