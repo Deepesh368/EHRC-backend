@@ -70,7 +70,7 @@ public class HospitalAddrController {
     @GetMapping("/doctor/get-consents/{doctor_id}/{hospital_id}")
     public ResponseEntity<?>get_consents_doctor(@PathVariable Integer doctor_id,@PathVariable String hospital_id){
         String token = getToken();
-        List<Consent>s_list = webClient.get().uri(consentServer+"get/doctor/"+doctor_id+"/"+hospital_id).header(HttpHeaders.AUTHORIZATION,token ).retrieve().bodyToFlux(Consent.class).collectList().block();
+        List<Consent>s_list = webClient.get().uri(consentServer+"get/doctor?doctor_id="+doctor_id+"&hospital_id="+hospital_id).header(HttpHeaders.AUTHORIZATION,token ).retrieve().bodyToFlux(Consent.class).collectList().block();
         return ResponseEntity.accepted().body(s_list);
     }
     @PostMapping("/create-consent")
@@ -120,7 +120,7 @@ public class HospitalAddrController {
             HospitalAddr h= hospitalAddrRepo.findById(hospital).orElseThrow();
             String port = h.getAddr();
             List<PatientRecord> temp_list  =new ArrayList<>();
-            AuthenticationResponse rt = webClient.post().uri("http://"+"localhost"+port+"/api/v1/auth/authenticate").bodyValue(hospital_auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
+            AuthenticationResponse rt = webClient.post().uri("http://"+"localhost:"+port+"/api/v1/auth/authenticate").bodyValue(hospital_auth).retrieve().bodyToMono(AuthenticationResponse.class).block();
             String hospital_token ="Bearer "+rt.getToken();
             temp_list = webClient.get().uri(uriBuilder -> uriBuilder.scheme("http").host("localhost").port(port).path("/api/v1/hospital-records/search_all").queryParam("startDate", startDate.toString()).queryParam("endDate", endDate.toString()).queryParam("patient_id", patient_id).queryParam("record_type", consent.getRecord_type()).queryParam("severity", consent.getSeverity()).build()).header(HttpHeaders.AUTHORIZATION, hospital_token).retrieve().bodyToFlux(PatientRecord.class).collectList().block();
             pr_list.addAll(temp_list);

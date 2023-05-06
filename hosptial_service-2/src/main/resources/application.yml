@@ -2,13 +2,13 @@ server:
   port: 9006
 credentials:
   id: "2"
-  name: "Mera-dusra-hospital"
-  password: "def"
+  name: "Second-hospital"
+  password: "abcd"
 hospital-manager:
   address: "http://localhost:9001/"
 spring:
   application:
-    name: hospital-service-2
+    name: hospital-service
 
   datasource:
     url: jdbc:mysql://localhost:3306/hospital_two
